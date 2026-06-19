@@ -129,7 +129,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
-
+import axios from 'axios'
 const sectionRef = ref(null)
 const inView     = ref(false)
 const focused    = ref(null)
@@ -187,6 +187,21 @@ onMounted(() => {
   if (sectionRef.value) observer.observe(sectionRef.value)
 })
 onUnmounted(() => observer?.disconnect())
+const formData={
+  name: this.name,
+  company: this.company,
+  email: this.email,
+  phone: this.phone,
+  products: this.products,
+  message: this.message
+};
+axios.post('http://localhost:127.0.0.1:8000/contact', formData)
+.then(response => {
+  console.log('Message envoyé avec succès:', response.data);
+}).catch((error)=>{
+  console.log(error.respons?.data);
+
+});
 </script>
 
 <style scoped>
