@@ -16,7 +16,7 @@
       <!-- Desktop Nav -->
       <nav class="navbar__links">
         <a href="#accueil"  class="navbar__link" @click.prevent="scrollTo('accueil')">Accueil</a>
-        <a href="#produits" class="navbar__link" @click.prevent="scrollTo('produits')">Produits</a>
+        <a href="/produits" class="navbar__link" @click.prevent="goProducts">Produits</a>
         <a href="#apropos"  class="navbar__link" @click.prevent="scrollTo('apropos')">À propos</a>
         <a href="#contact"  class="navbar__link" @click.prevent="scrollTo('contact')">Contact</a>
       </nav>
@@ -36,7 +36,7 @@
     <!-- Mobile Menu -->
     <div class="navbar__mobile" :class="{ open: menuOpen }">
       <a href="#accueil"  class="navbar__mobile-link" @click="navigate('accueil')">Accueil</a>
-      <a href="#produits" class="navbar__mobile-link" @click="navigate('produits')">Produits</a>
+      <a href="/produits" class="navbar__mobile-link" @click.prevent="goProducts">Produits</a>
       <a href="#apropos"  class="navbar__mobile-link" @click="navigate('apropos')">À propos</a>
       <a href="#contact"  class="navbar__mobile-link" @click="navigate('contact')">Contact</a>
       <button class="navbar__mobile-cta" @click="navigate('contact')">Demander un devis</button>
@@ -46,11 +46,18 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
 
 const isScrolled = ref(false)
 const menuOpen   = ref(false)
 
+const router = useRouter()
 const onScroll = () => { isScrolled.value = window.scrollY > 60 }
+
+const goProducts = () => {
+  router.push('/produits')
+  menuOpen.value = false
+}
 
 const scrollTo = (id) => {
   const el = document.getElementById(id)
