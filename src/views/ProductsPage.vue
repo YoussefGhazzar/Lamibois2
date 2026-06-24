@@ -135,6 +135,8 @@ import { useRouter } from 'vue-router'
 import TheNavbar from '@/components/TheNavbar.vue'
 import TheFooter from '@/components/TheFooter.vue'
 
+import imgMelamine    from '@/assets/products/panneau_melamine.png'
+import imgLatteBlanc  from '@/assets/products/latte_blanc.png'
 import imgHydrofuge   from '@/assets/products/Hydrofuge_HDF.png'
 import imgBoisDur     from '@/assets/products/bois_dur.png'
 import imgCompacto    from '@/assets/products/panneau_compacto.png'
@@ -144,13 +146,46 @@ import imgMDFBrut     from '@/assets/products/panneaux_MDFbrut.png'
 
 const router = useRouter()
 const goHome    = () => router.push('/')
-const goContact = () => router.push('/#contact')
+const goContact = () => router.push('/contact')
 
 const activeCategory = ref('Tous')
 
 const categories = ['Tous', 'MDF', 'HPL', 'Stratifié', 'Bois']
 
 const products = [
+  // Requested top products
+  {
+    id: 0,
+    name: 'Panneau Mélaminé',
+    category: 'MDF',
+    featured: true,
+    badge: 'Nouveau',
+    image: imgMelamine,
+    desc: 'Large gamme de panneaux mélaminés colorés et texturés, prêts à l\'emploi. Surface décorative durable pour mobilier et agencement.',
+    specs: [
+      { label: 'Épaisseur', value: '16 / 18 / 22 mm' },
+      { label: 'Format',    value: '2440 × 1220 mm' },
+      { label: 'Décors',    value: '+30 coloris disponibles' },
+      { label: 'Norme',     value: 'E1' },
+    ],
+    tags: ['Coloris', 'Mobilier', 'Agencement'],
+  },
+  {
+    id: 7,
+    name: 'Latte Blanc',
+    category: 'Bois',
+    featured: false,
+    badge: null,
+    image: imgLatteBlanc,
+    desc: 'Panneau latté (bois massif lamellé) avec face mélaminée blanche. Excellente stabilité dimensionnelle, idéal pour plans de travail et étagères.',
+    specs: [
+      { label: 'Épaisseur', value: '18 / 22 / 25 mm' },
+      { label: 'Format',    value: '2440 × 1220 mm' },
+      { label: 'Âme',       value: 'Latté bois massif' },
+      { label: 'Finition',  value: 'Mélaminé blanc' },
+    ],
+    tags: ['Stable', 'Plan de travail', 'Étagère'],
+  },
   {
     id: 1,
     name: 'MDF Brut',
@@ -185,7 +220,7 @@ const products = [
   },
   {
     id: 3,
-    name: 'MDF Haute Brillance',
+    name: 'MDF High Gloss',
     category: 'MDF',
     featured: false,
     badge: 'Premium',

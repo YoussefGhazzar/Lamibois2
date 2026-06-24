@@ -5,7 +5,7 @@
     <ProductsSection />
     <AboutSection />
     <WhyUsSection />
-    <ContactSection />
+    
     <TheFooter />
   </div>
 </template>
@@ -16,7 +16,7 @@ import HeroSection from '@/components/HeroSection.vue'
 import ProductsSection from '@/components/ProductsSection.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import WhyUsSection from '@/components/WhyUsSection.vue'
-import ContactSection from '@/components/ContactSection.vue'
+import ContactPage from '@/views/ContactPage.vue'
 import TheFooter from '@/components/TheFooter.vue'
 </script>
 

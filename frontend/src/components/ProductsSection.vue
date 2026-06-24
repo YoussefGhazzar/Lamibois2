@@ -91,6 +91,32 @@ const categories = ['Tous', 'MDF Mélaminé', 'Contreplaqué', 'Bois Massif', 'O
 
 const products = [
   {
+    id: 0, size: 'large',
+    name: 'Panneau Mélaminé',
+    category: 'MDF Mélaminé', badge: 'Nouveau',
+    desc: 'Large gamme de panneaux mélaminés colorés et texturés, prêts à l\'emploi. Surface décorative durable pour mobilier et agencement.',
+    visual: { type: 'melamine', color1: '#F5F0E8', color2: '#E8E2D6', color3: '#DDD7CC', lines: 'light' },
+    specs: [
+      { label: 'Épaisseur', value: '16 / 18 / 22 mm' },
+      { label: 'Format', value: '2440 × 1220 mm' },
+      { label: 'Décors', value: '+30 coloris disponibles' },
+      { label: 'Norme', value: 'E1 / CARB P2' },
+    ]
+  },
+  {
+    id: 7, size: 'medium',
+    name: 'Latte Blanc',
+    category: 'Bois Massif',
+    desc: 'Panneau latté (bois massif lamellé) avec face mélaminée blanche. Excellente stabilité dimensionnelle, idéal pour plans de travail et étagères.',
+    visual: { type: 'solid', color1: '#F7F6F1', color2: '#E4E0D8', color3: '#D6D2C8', lines: 'soft' },
+    specs: [
+      { label: 'Épaisseur', value: '18 / 22 / 25 mm' },
+      { label: 'Format', value: '2440 × 1220 mm' },
+      { label: 'Âme', value: 'Latté bois massif' },
+      { label: 'Finition', value: 'Mélaminé blanc' },
+    ]
+  },
+  {
     id: 1, size: 'large',
     name: 'MDF Mélaminé Blanc Perle',
     category: 'MDF Mélaminé', badge: 'Best seller',

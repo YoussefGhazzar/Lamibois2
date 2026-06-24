@@ -39,7 +39,7 @@
         <div class="why__bottom-text">
           <p>Vous avez des questions sur nos produits ou délais ?</p>
         </div>
-        <button class="why__bottom-btn" @click="scrollTo('contact')">
+        <button class="why__bottom-btn" @click="$router.push('/contact')">
           Parler à un expert →
         </button>
       </div>
