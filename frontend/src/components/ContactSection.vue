@@ -129,7 +129,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, onUnmounted } from 'vue'
-
+import axios from 'axios'
 const sectionRef = ref(null)
 const inView     = ref(false)
 const focused    = ref(null)
@@ -187,6 +187,7 @@ onMounted(() => {
   if (sectionRef.value) observer.observe(sectionRef.value)
 })
 onUnmounted(() => observer?.disconnect())
+
 </script>
 
 <style scoped>

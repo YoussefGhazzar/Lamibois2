@@ -54,7 +54,7 @@
             <h3 class="products__card-name">{{ product.name }}</h3>
             <p class="products__card-desc">{{ product.desc }}</p>
           </div>
-          <button class="products__card-btn">
+          <button class="products__card-btn" @click="$router.push(`/produits`)">
             Voir la fiche
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -69,7 +69,7 @@
 
     <!-- View all CTA -->
     <div class="products__footer" :class="{ visible: inView }">
-      <button class="products__view-all">
+      <button class="products__view-all" @click="$router.push(`/produits`)">
         Voir tout le catalogue
         <span class="products__view-arrow">→</span>
       </button>
@@ -90,32 +90,6 @@ const activeCategory = ref('Tous')
 const categories = ['Tous', 'MDF Mélaminé', 'Contreplaqué', 'Bois Massif', 'OSB']
 
 const products = [
-  {
-    id: 0, size: 'large',
-    name: 'Panneau Mélaminé',
-    category: 'MDF Mélaminé', badge: 'Nouveau',
-    desc: 'Large gamme de panneaux mélaminés colorés et texturés, prêts à l\'emploi. Surface décorative durable pour mobilier et agencement.',
-    visual: { type: 'melamine', color1: '#F5F0E8', color2: '#E8E2D6', color3: '#DDD7CC', lines: 'light' },
-    specs: [
-      { label: 'Épaisseur', value: '16 / 18 / 22 mm' },
-      { label: 'Format', value: '2440 × 1220 mm' },
-      { label: 'Décors', value: '+30 coloris disponibles' },
-      { label: 'Norme', value: 'E1 / CARB P2' },
-    ]
-  },
-  {
-    id: 7, size: 'medium',
-    name: 'Latte Blanc',
-    category: 'Bois Massif',
-    desc: 'Panneau latté (bois massif lamellé) avec face mélaminée blanche. Excellente stabilité dimensionnelle, idéal pour plans de travail et étagères.',
-    visual: { type: 'solid', color1: '#F7F6F1', color2: '#E4E0D8', color3: '#D6D2C8', lines: 'soft' },
-    specs: [
-      { label: 'Épaisseur', value: '18 / 22 / 25 mm' },
-      { label: 'Format', value: '2440 × 1220 mm' },
-      { label: 'Âme', value: 'Latté bois massif' },
-      { label: 'Finition', value: 'Mélaminé blanc' },
-    ]
-  },
   {
     id: 1, size: 'large',
     name: 'MDF Mélaminé Blanc Perle',
