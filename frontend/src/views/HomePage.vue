@@ -4,8 +4,9 @@
     <HeroSection />
     <ProductsSection />
     <AboutSection />
-    <WhyUsSection />
     <ContactSection />
+    <WhyUsSection />
+    
     <TheFooter />
   </div>
 </template>

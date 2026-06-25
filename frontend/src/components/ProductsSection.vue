@@ -54,7 +54,7 @@
             <h3 class="products__card-name">{{ product.name }}</h3>
             <p class="products__card-desc">{{ product.desc }}</p>
           </div>
-          <button class="products__card-btn">
+          <button class="products__card-btn" @click="$router.push(`/produits`)">
             Voir la fiche
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
@@ -69,7 +69,7 @@
 
     <!-- View all CTA -->
     <div class="products__footer" :class="{ visible: inView }">
-      <button class="products__view-all">
+      <button class="products__view-all" @click="$router.push(`/produits`)">
         Voir tout le catalogue
         <span class="products__view-arrow">→</span>
       </button>

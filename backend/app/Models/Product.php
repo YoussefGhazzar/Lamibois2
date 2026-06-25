@@ -14,7 +14,9 @@ class Product extends Model
         'description',
         'norm',
         'price',
-        'image_url',
+        'image',
+        "category",
+        "norm"
     ];
     
 }
