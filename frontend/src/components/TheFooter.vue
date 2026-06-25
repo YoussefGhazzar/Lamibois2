@@ -10,7 +10,7 @@
         <p class="footer__cta-sub">Contactez notre équipe pour un devis personnalisé.</p>
       </div>
       <div class="footer__cta-actions">
-        <button class="footer__btn-primary" @click="scrollTo('contact')">Demander un devis →</button>
+        <button class="footer__btn-primary" @click="$router.push('/contact')">Demander un devis →</button>
         <span class="footer__response-time">Réponse sous 24h</span>
       </div>
     </div>
@@ -64,7 +64,7 @@
           <li>Certifications</li>
           <li>Livraison</li>
           <li>Partenaires</li>
-          <li @click="scrollTo('contact')">Contact</li>
+          <li @click="$router.push('/contact')">Contact</li>
         </ul>
       </div>
 
