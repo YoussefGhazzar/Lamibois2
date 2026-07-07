@@ -1,6 +1,84 @@
 ﻿<template>
   <div class="dashboard">
 
+    <!-- MODAL MODIFIER -->
+    <div v-if="showModal" class="modal__overlay" @click.self="closeModal">
+      <div class="modal">
+        <div class="modal__header">
+          <h3 class="modal__title">Modifier le produit</h3>
+          <button class="modal__close" @click="closeModal">×</button>
+        </div>
+        <form class="modal__form" @submit.prevent="handleEdit">
+
+          <div class="modal__row">
+            <div class="modal__field">
+              <label>Nom du produit</label>
+              <input type="text" v-model="editForm.name" />
+            </div>
+            <div class="modal__field">
+              <label>Catégorie</label>
+              <input type="text" v-model="editForm.category" placeholder="Ex: MDF, HPL, Bois" />
+            </div>
+          </div>
+
+          <div class="modal__row">
+            <div class="modal__field">
+              <label>Espace</label>
+              <input type="text" v-model="editForm.space" placeholder="Ex: Intérieur, Extérieur" />
+            </div>
+            <div class="modal__field">
+              <label>Format</label>
+              <input type="text" v-model="editForm.format" placeholder="Ex: 2800×2070×18mm" />
+            </div>
+          </div>
+
+          <div class="modal__row">
+            <div class="modal__field">
+              <label>Finition</label>
+              <input type="text" v-model="editForm.finition" placeholder="Ex: Matte, Gloss" />
+            </div>
+            <div class="modal__field">
+              <label>Norme</label>
+              <input type="text" v-model="editForm.norm" placeholder="Ex: EN 438-6" />
+            </div>
+          </div>
+
+          <div class="modal__field">
+            <label>Description</label>
+            <textarea v-model="editForm.description" rows="3"></textarea>
+          </div>
+
+          <div class="modal__field">
+            <label>Image (laisser vide pour garder l'actuelle)</label>
+            <div
+              class="modal__upload"
+              @click="triggerEditUpload"
+              :class="{ 'has-image': editForm.imagePreview }"
+            >
+              <img v-if="editForm.imagePreview" :src="editForm.imagePreview" class="modal__upload-preview" />
+              <div v-else class="modal__upload-placeholder">
+                <span>↑</span>
+                <p>Cliquer pour changer l'image</p>
+              </div>
+            </div>
+            <input ref="editFileInput" type="file" accept="image/*" style="display:none" @change="handleEditImageUpload" />
+          </div>
+
+          <p v-if="editError" class="modal__error">{{ editError }}</p>
+
+          <div class="modal__footer">
+            <button type="button" class="modal__btn-cancel" @click="closeModal">Annuler</button>
+            <button type="submit" class="modal__btn-save" :class="{ success: editSuccess }" :disabled="editSubmitting">
+              <span v-if="editSubmitting">Envoi…</span>
+              <span v-else-if="editSuccess">✓ Modifié !</span>
+              <span v-else>Sauvegarder</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
     <!-- Sidebar -->
     <aside class="dashboard__sidebar">
       <div class="dashboard__logo">
@@ -21,7 +99,7 @@
         </button>
       </nav>
       <div class="dashboard__sidebar-footer">
-        <button class="dashboard__logout" @click="$router.push('/login')">
+        <button class="dashboard__logout" @click="logout">
           <span>↩</span> Déconnexion
         </button>
       </div>
@@ -46,65 +124,82 @@
 
       <!-- PRODUCTS LIST TAB -->
       <div v-if="activeTab === 'products'" class="dashboard__content">
-        <div class="dashboard__stats">
-          <div class="dashboard__stat">
-            <strong>{{ products.length }}</strong>
-            <span>Produits total</span>
-          </div>
-          <div class="dashboard__stat">
-            <strong>{{ products.filter(p => p.badge).length }}</strong>
-            <span>Avec badge</span>
-          </div>
-          <div class="dashboard__stat">
-            <strong>{{ categories.length }}</strong>
-            <span>Catégories</span>
-          </div>
+
+        <div v-if="loadingProducts" class="dashboard__loading">
+          <div class="dashboard__spinner"></div>
+          <p>Chargement…</p>
         </div>
 
-        <div class="dashboard__table-wrap">
-          <table class="dashboard__table">
-            <thead>
-              <tr>
-                <th>Produit</th>
-                <th>Catégorie</th>
-                <th>Badge</th>
-                <th>Tags</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="product in products" :key="product.id">
-                <td>
-                  <div class="dashboard__product-cell">
-                    <div class="dashboard__product-thumb" :style="{ background: product.thumbColor }"></div>
-                    <span>{{ product.name }}</span>
-                  </div>
-                </td>
-                <td><span class="dashboard__cat-tag">{{ product.category }}</span></td>
-                <td>
-                  <span v-if="product.badge" class="dashboard__badge-tag">{{ product.badge }}</span>
-                  <span v-else class="dashboard__no-badge">—</span>
-                </td>
-                <td>
-                  <div class="dashboard__tags">
-                    <span v-for="tag in product.tags.slice(0,2)" :key="tag" class="dashboard__tag">{{ tag }}</span>
-                  </div>
-                </td>
-                <td>
-                  <div class="dashboard__actions">
-                    <button class="dashboard__btn-edit" @click="editProduct(product)">Modifier</button>
-                    <button class="dashboard__btn-delete" @click="deleteProduct(product.id)">Supprimer</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <template v-else>
+          <div class="dashboard__stats">
+            <div class="dashboard__stat">
+              <strong>{{ products.length }}</strong>
+              <span>Produits total</span>
+            </div>
+            <div class="dashboard__stat">
+              <strong>{{ new Set(products.map(p => p.category)).size }}</strong>
+              <span>Catégories</span>
+            </div>
+            <div class="dashboard__stat">
+              <strong>{{ products.length > 0 ? '✓' : '—' }}</strong>
+              <span>Inventaire</span>
+            </div>
+          </div>
+
+          <div class="dashboard__table-wrap">
+            <table class="dashboard__table">
+              <thead>
+                <tr>
+                  <th>Produit</th>
+                  <th>Catégorie</th>
+                  <th>Espace</th>
+                  <th>Format</th>
+                  <th>Finition</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-if="products.length === 0">
+                  <td colspan="6" style="text-align:center; color: var(--mist); padding: 40px;">
+                    Aucun produit trouvé.
+                  </td>
+                </tr>
+                <tr v-for="product in products" :key="product.id">
+                  <td>
+                    <div class="dashboard__product-cell">
+                      <img
+                        v-if="product.image"
+                        :src="product.image"
+                        class="dashboard__product-thumb-img"
+                        @error="(e) => e.target.style.display = 'none'"
+                      />
+                      <div v-else class="dashboard__product-thumb" style="background: #C9A87C"></div>
+                      <span>{{ product.name }}</span>
+                    </div>
+                  </td>
+                  <td><span class="dashboard__cat-tag">{{ product.category }}</span></td>
+                  <td><span class="dashboard__cat-tag">{{ product.space || '—' }}</span></td>
+                  <td><span class="dashboard__cat-tag">{{ product.format || '—' }}</span></td>
+                  <td><span class="dashboard__cat-tag">{{ product.finition || '—' }}</span></td>
+                  <td>
+                    <div class="dashboard__actions">
+                      <button class="dashboard__btn-edit" @click="openEditModal(product)">Modifier</button>
+                      <button class="dashboard__btn-delete" @click="deleteProduct(product.id)">Supprimer</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </template>
       </div>
 
       <!-- ADD PRODUCT TAB -->
       <div v-if="activeTab === 'add'" class="dashboard__content">
         <div class="dashboard__form-wrap">
+
+          <p v-if="formError" class="dashboard__form-error">{{ formError }}</p>
+
           <form class="dashboard__form" @submit.prevent="handleAddProduct">
 
             <div class="dashboard__form-row">
@@ -114,26 +209,35 @@
               </div>
               <div class="dashboard__field">
                 <label>Catégorie *</label>
-                <select v-model="newProduct.category">
-                  <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
-                </select>
+                <input type="text" v-model="newProduct.category" placeholder="Ex: MDF, HPL, Stratifié, Bois" />
               </div>
             </div>
 
             <div class="dashboard__form-row">
               <div class="dashboard__field">
-                <label>Badge (optionnel)</label>
-                <input type="text" v-model="newProduct.badge" placeholder="Ex: Nouveau, Premium..." />
+                <label>Espace</label>
+                <input type="text" v-model="newProduct.space" placeholder="Ex: Intérieur, Extérieur" />
               </div>
               <div class="dashboard__field">
-                <label>Tags (séparés par virgule)</label>
-                <input type="text" v-model="newProduct.tagsInput" placeholder="Ex: Intérieur, Cuisine" />
+                <label>Format</label>
+                <input type="text" v-model="newProduct.format" placeholder="Ex: 2800×2070×18mm" />
+              </div>
+            </div>
+
+            <div class="dashboard__form-row">
+              <div class="dashboard__field">
+                <label>Finition</label>
+                <input type="text" v-model="newProduct.finition" placeholder="Ex: Matte, Gloss, Texturée" />
+              </div>
+              <div class="dashboard__field">
+                <label>Norme</label>
+                <input type="text" v-model="newProduct.norm" placeholder="Ex: EN 438-6" />
               </div>
             </div>
 
             <div class="dashboard__field">
               <label>Description *</label>
-              <textarea v-model="newProduct.desc" rows="4" placeholder="Description du produit..."></textarea>
+              <textarea v-model="newProduct.description" rows="4" placeholder="Description du produit..."></textarea>
             </div>
 
             <div class="dashboard__field">
@@ -149,22 +253,12 @@
               <input ref="fileInput" type="file" accept="image/*" style="display:none" @change="handleImageUpload" />
             </div>
 
-            <div class="dashboard__specs-section">
-              <label>Spécifications techniques</label>
-              <div class="dashboard__specs-grid">
-                <div class="dashboard__spec-row" v-for="(spec, i) in newProduct.specs" :key="i">
-                  <input type="text" v-model="spec.label" placeholder="Ex: Épaisseur" />
-                  <input type="text" v-model="spec.value" placeholder="Ex: 16 / 18 mm" />
-                  <button type="button" class="dashboard__spec-remove" @click="removeSpec(i)">×</button>
-                </div>
-              </div>
-              <button type="button" class="dashboard__add-spec" @click="addSpec">+ Ajouter une spec</button>
-            </div>
-
             <div class="dashboard__form-footer">
               <button type="button" class="dashboard__btn-cancel" @click="resetForm">Annuler</button>
-              <button type="submit" class="dashboard__btn-submit" :class="{ success: addSuccess }">
-                {{ addSuccess ? '✓ Produit ajouté !' : 'Ajouter le produit' }}
+              <button type="submit" class="dashboard__btn-submit" :class="{ success: addSuccess }" :disabled="submitting">
+                <span v-if="submitting">Envoi…</span>
+                <span v-else-if="addSuccess">✓ Produit ajouté !</span>
+                <span v-else>Ajouter le produit</span>
               </button>
             </div>
 
@@ -177,70 +271,215 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 
-const activeTab  = ref('products')
-const addSuccess = ref(false)
-const fileInput  = ref(null)
+const router   = useRouter()
+const API_BASE = 'http://127.0.0.1:8001/api'
 
-const categories = ['MDF', 'HPL', 'Stratifie', 'Bois']
-
-const products = ref([
-  { id: 1, name: 'Panneau Melamine', category: 'MDF', badge: 'Nouveau', tags: ['Coloris', 'Mobilier'], thumbColor: '#F0ECE4' },
-  { id: 2, name: 'MDF Brut',        category: 'MDF', badge: 'Bestseller', tags: ['Interieur', 'Peinture'], thumbColor: '#D4B896' },
-  { id: 3, name: 'MDF Hydrofuge',   category: 'MDF', badge: 'Resistant', tags: ['Humidite', 'Cuisine'], thumbColor: '#8B9E7A' },
-  { id: 4, name: 'MDF High Gloss',  category: 'MDF', badge: 'Premium',  tags: ['Facades', 'Cuisine'], thumbColor: '#2A2A2A' },
-  { id: 5, name: 'HPL Compacto',    category: 'HPL', badge: null,       tags: ['Collectif', 'Exterieur'], thumbColor: '#6B7B8A' },
-  { id: 6, name: 'Stratidecor',     category: 'Stratifie', badge: null, tags: ['Decoration'], thumbColor: '#C4975A' },
-  { id: 7, name: 'Bois Dur',        category: 'Bois', badge: 'En stock', tags: ['Massif', 'Noble'], thumbColor: '#8B6030' },
-  { id: 8, name: 'Latte Blanc',     category: 'Bois', badge: null,      tags: ['Stable'], thumbColor: '#E8E0D0' },
-])
-
-const newProduct = reactive({
-  name: '', category: 'MDF', badge: '',
-  tagsInput: '', desc: '', imagePreview: null,
-  specs: [{ label: '', value: '' }]
+const authHeaders = () => ({
+  Authorization: `Bearer ${localStorage.getItem('access_token')}`,
 })
 
+// ── Global state ──────────────────────────────────────────────────────────────
+const activeTab      = ref('products')
+const loadingProducts = ref(true)
+const products       = ref([])
+
+// ── Add product state ─────────────────────────────────────────────────────────
+const addSuccess = ref(false)
+const submitting = ref(false)
+const formError  = ref('')
+const fileInput  = ref(null)
+
+const newProduct = reactive({
+  name: '', category: '', space: '', format: '',
+  finition: '', norm: '', description: '',
+  imageFile: null, imagePreview: null,
+})
+
+// ── Edit modal state ──────────────────────────────────────────────────────────
+const showModal      = ref(false)
+const editSubmitting = ref(false)
+const editSuccess    = ref(false)
+const editError      = ref('')
+const editFileInput  = ref(null)
+
+const editForm = reactive({
+  id: null,
+  name: '', category: '', space: '', format: '',
+  finition: '', norm: '', description: '',
+  imageFile: null, imagePreview: null,
+})
+
+// ── Image upload (add form) ───────────────────────────────────────────────────
 const triggerUpload = () => fileInput.value?.click()
 
 const handleImageUpload = (e) => {
   const file = e.target.files[0]
   if (!file) return
+  newProduct.imageFile = file
   const reader = new FileReader()
   reader.onload = (ev) => { newProduct.imagePreview = ev.target.result }
   reader.readAsDataURL(file)
 }
 
-const addSpec    = () => newProduct.specs.push({ label: '', value: '' })
-const removeSpec = (i) => newProduct.specs.splice(i, 1)
+// ── Image upload (edit modal) ─────────────────────────────────────────────────
+const triggerEditUpload = () => editFileInput.value?.click()
 
-const handleAddProduct = () => {
-  if (!newProduct.name || !newProduct.desc) return
-  products.value.push({
-    id: Date.now(),
-    name: newProduct.name,
-    category: newProduct.category,
-    badge: newProduct.badge || null,
-    tags: newProduct.tagsInput.split(',').map(t => t.trim()).filter(Boolean),
-    thumbColor: '#C9A87C',
-  })
-  addSuccess.value = true
-  setTimeout(() => { addSuccess.value = false; activeTab.value = 'products'; resetForm() }, 1500)
+const handleEditImageUpload = (e) => {
+  const file = e.target.files[0]
+  if (!file) return
+  editForm.imageFile = file
+  const reader = new FileReader()
+  reader.onload = (ev) => { editForm.imagePreview = ev.target.result }
+  reader.readAsDataURL(file)
+}
+
+// ── Fetch products ────────────────────────────────────────────────────────────
+const fetchProducts = async () => {
+  loadingProducts.value = true
+  try {
+    const res = await axios.get(`${API_BASE}/products`, { headers: authHeaders() })
+    let raw = res.data
+    if (!Array.isArray(raw)) raw = raw.data ?? raw.products ?? Object.values(raw)[0] ?? []
+    products.value = raw
+  } catch (err) {
+    console.error('Failed to fetch products', err)
+  } finally {
+    loadingProducts.value = false
+  }
+}
+
+onMounted(fetchProducts)
+
+// ── Add product ───────────────────────────────────────────────────────────────
+const handleAddProduct = async () => {
+  formError.value = ''
+  if (!newProduct.name.trim())        return (formError.value = 'Le nom est requis.')
+  if (!newProduct.category.trim())    return (formError.value = 'La catégorie est requise.')
+  if (!newProduct.description.trim()) return (formError.value = 'La description est requise.')
+
+  submitting.value = true
+
+  const formData = new FormData()
+  formData.append('name',        newProduct.name)
+  formData.append('category',    newProduct.category)
+  formData.append('space',       newProduct.space       || '')
+  formData.append('format',      newProduct.format      || '')
+  formData.append('finition',    newProduct.finition    || '')
+  formData.append('norm',        newProduct.norm        || '')
+  formData.append('description', newProduct.description)
+  if (newProduct.imageFile) formData.append('image', newProduct.imageFile)
+
+  try {
+    await axios.post(`${API_BASE}/products`, formData, {
+      headers: { ...authHeaders(), 'Content-Type': 'multipart/form-data' },
+    })
+    await fetchProducts()
+    addSuccess.value = true
+    setTimeout(() => {
+      addSuccess.value = false
+      activeTab.value  = 'products'
+      resetForm()
+    }, 1500)
+  } catch (err) {
+    console.error('Submit failed', err)
+    formError.value = err.response?.data?.message ?? 'Une erreur est survenue.'
+  } finally {
+    submitting.value = false
+  }
 }
 
 const resetForm = () => {
-  newProduct.name = ''
-  newProduct.category = 'MDF'
-  newProduct.badge = ''
-  newProduct.tagsInput = ''
-  newProduct.desc = ''
+  newProduct.name         = ''
+  newProduct.category     = ''
+  newProduct.space        = ''
+  newProduct.format       = ''
+  newProduct.finition     = ''
+  newProduct.norm         = ''
+  newProduct.description  = ''
+  newProduct.imageFile    = null
   newProduct.imagePreview = null
-  newProduct.specs = [{ label: '', value: '' }]
+  formError.value         = ''
 }
 
-const editProduct   = (p) => { activeTab.value = 'add'; newProduct.name = p.name; newProduct.category = p.category }
-const deleteProduct = (id) => { products.value = products.value.filter(p => p.id !== id) }
+// ── Open edit modal ───────────────────────────────────────────────────────────
+const openEditModal = (p) => {
+  editForm.id           = p.id
+  editForm.name         = p.name        ?? ''
+  editForm.category     = p.category    ?? ''
+  editForm.space        = p.space       ?? ''
+  editForm.format       = p.format      ?? ''
+  editForm.finition     = p.finition    ?? ''
+  editForm.norm         = p.norm        ?? ''
+  editForm.description  = p.description ?? ''
+  editForm.imageFile    = null
+  editForm.imagePreview = p.image       ?? null
+  editError.value       = ''
+  editSuccess.value     = false
+  showModal.value       = true
+}
+
+const closeModal = () => {
+  showModal.value = false
+  editError.value = ''
+}
+
+// ── Submit edit ───────────────────────────────────────────────────────────────
+const handleEdit = async () => {
+  editError.value = ''
+  if (!editForm.name.trim())     return (editError.value = 'Le nom est requis.')
+  if (!editForm.category.trim()) return (editError.value = 'La catégorie est requise.')
+
+  editSubmitting.value = true
+
+  const formData = new FormData()
+  formData.append('_method',     'PUT')
+  formData.append('name',        editForm.name)
+  formData.append('category',    editForm.category)
+  formData.append('space',       editForm.space       || '')
+  formData.append('format',      editForm.format      || '')
+  formData.append('finition',    editForm.finition    || '')
+  formData.append('norm',        editForm.norm        || '')
+  formData.append('description', editForm.description || '')
+  if (editForm.imageFile) formData.append('image', editForm.imageFile)
+
+  try {
+    await axios.post(`${API_BASE}/products/${editForm.id}`, formData, {
+      headers: { ...authHeaders(), 'Content-Type': 'multipart/form-data' },
+    })
+    await fetchProducts()
+    editSuccess.value = true
+    setTimeout(() => {
+      editSuccess.value = false
+      showModal.value   = false
+    }, 1500)
+  } catch (err) {
+    console.error('Edit failed', err)
+    editError.value = err.response?.data?.message ?? 'Une erreur est survenue.'
+  } finally {
+    editSubmitting.value = false
+  }
+}
+
+// ── Delete ────────────────────────────────────────────────────────────────────
+const deleteProduct = async (id) => {
+  if (!confirm('Supprimer ce produit ?')) return
+  try {
+    await axios.delete(`${API_BASE}/products/${id}`, { headers: authHeaders() })
+    products.value = products.value.filter(p => p.id !== id)
+  } catch (err) {
+    console.error('Delete failed', err.response?.data ?? err)
+  }
+}
+
+// ── Logout ────────────────────────────────────────────────────────────────────
+const logout = () => {
+  localStorage.removeItem('access_token')
+  router.push('/login')
+}
 </script>
 
 <style scoped>
@@ -251,7 +490,190 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   background: var(--linen);
 }
 
-/* SIDEBAR */
+/* ── MODAL ── */
+.modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 29, 17, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--white);
+  border-radius: 4px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(17, 29, 17, 0.3);
+}
+
+.modal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 28px 32px 24px;
+  border-bottom: 1px solid rgba(45, 74, 45, 0.08);
+}
+
+.modal__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 300;
+  color: var(--forest);
+}
+
+.modal__close {
+  font-size: 24px;
+  color: var(--mist);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: 2px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.modal__close:hover { color: #C0392B; background: rgba(192, 57, 43, 0.08); }
+
+.modal__form {
+  padding: 28px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modal__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modal__field label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+.modal__field input,
+.modal__field select,
+.modal__field textarea {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--ink);
+  background: var(--linen);
+  border: 1px solid rgba(45, 74, 45, 0.15);
+  border-radius: 2px;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color 0.25s;
+  resize: none;
+}
+
+.modal__field input:focus,
+.modal__field select:focus,
+.modal__field textarea:focus { border-color: var(--forest); background: var(--white); }
+
+/* Modal image upload */
+.modal__upload {
+  border: 2px dashed rgba(45, 74, 45, 0.2);
+  border-radius: 3px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  min-height: 120px;
+  transition: border-color 0.25s, background 0.25s;
+  text-align: center;
+}
+
+.modal__upload:hover { border-color: var(--wood); background: rgba(201, 168, 124, 0.04); }
+.modal__upload.has-image { padding: 0; overflow: hidden; }
+
+.modal__upload-preview { width: 100%; height: 160px; object-fit: cover; display: block; }
+
+.modal__upload-placeholder {
+  color: var(--mist);
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.modal__upload-placeholder span {
+  font-size: 24px;
+  color: var(--wood);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.modal__error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #C0392B;
+  background: rgba(192, 57, 43, 0.06);
+  border: 1px solid rgba(192, 57, 43, 0.2);
+  border-radius: 2px;
+  padding: 10px 14px;
+}
+
+.modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(45, 74, 45, 0.08);
+}
+
+.modal__btn-cancel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mist);
+  background: transparent;
+  border: 1px solid rgba(45, 74, 45, 0.15);
+  padding: 11px 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.modal__btn-cancel:hover { border-color: var(--forest); color: var(--forest); }
+
+.modal__btn-save {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--cream);
+  background: var(--forest);
+  border: none;
+  padding: 11px 28px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.modal__btn-save:hover:not(:disabled) { background: var(--forest-dark); }
+.modal__btn-save.success { background: #2D6A2D; }
+.modal__btn-save:disabled { opacity: 0.6; cursor: wait; }
+
+/* ── SIDEBAR ── */
 .dashboard__sidebar {
   background: var(--forest-deep);
   display: flex;
@@ -307,7 +729,6 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 
 .dashboard__nav-item:hover { background: rgba(201, 168, 124, 0.08); color: var(--cream); }
 .dashboard__nav-item.active { background: rgba(201, 168, 124, 0.12); color: var(--wood); }
-
 .dashboard__nav-icon { font-size: 14px; width: 20px; }
 
 .dashboard__sidebar-footer {
@@ -334,7 +755,7 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 
 .dashboard__logout:hover { color: #C0392B; }
 
-/* MAIN */
+/* ── MAIN ── */
 .dashboard__main { padding: 40px 48px; overflow-y: auto; }
 
 .dashboard__header {
@@ -362,11 +783,7 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   color: var(--forest);
 }
 
-.dashboard__header-info {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.dashboard__header-info { display: flex; align-items: center; gap: 12px; }
 
 .dashboard__admin-badge {
   font-family: var(--font-mono);
@@ -379,13 +796,33 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   border-radius: 2px;
 }
 
-.dashboard__admin-name {
-  font-size: 13px;
-  font-weight: 400;
-  color: var(--forest);
+.dashboard__admin-name { font-size: 13px; font-weight: 400; color: var(--forest); }
+
+/* Loading */
+.dashboard__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 80px 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mist);
 }
 
-/* STATS */
+.dashboard__spinner {
+  width: 32px; height: 32px;
+  border: 2px solid rgba(45, 74, 45, 0.12);
+  border-top-color: var(--wood);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Stats */
 .dashboard__stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -419,7 +856,7 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   color: var(--mist);
 }
 
-/* TABLE */
+/* Table */
 .dashboard__table-wrap {
   background: var(--white);
   border-radius: 3px;
@@ -427,10 +864,7 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   overflow: hidden;
 }
 
-.dashboard__table {
-  width: 100%;
-  border-collapse: collapse;
-}
+.dashboard__table { width: 100%; border-collapse: collapse; }
 
 .dashboard__table th {
   font-family: var(--font-mono);
@@ -454,16 +888,18 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 .dashboard__table tr:last-child td { border-bottom: none; }
 .dashboard__table tr:hover td { background: rgba(45, 74, 45, 0.02); }
 
-.dashboard__product-cell {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.dashboard__product-cell { display: flex; align-items: center; gap: 12px; }
 
 .dashboard__product-thumb {
-  width: 36px;
-  height: 36px;
+  width: 40px; height: 40px;
   border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.dashboard__product-thumb-img {
+  width: 40px; height: 40px;
+  border-radius: 3px;
+  object-fit: cover;
   flex-shrink: 0;
 }
 
@@ -475,29 +911,6 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   color: var(--forest);
   background: rgba(45, 74, 45, 0.08);
   padding: 3px 8px;
-  border-radius: 2px;
-}
-
-.dashboard__badge-tag {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--forest-deep);
-  background: var(--wood);
-  padding: 3px 8px;
-  border-radius: 2px;
-}
-
-.dashboard__no-badge { color: var(--mist); font-size: 12px; }
-
-.dashboard__tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.dashboard__tag {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--mist);
-  border: 1px solid rgba(45, 74, 45, 0.12);
-  padding: 2px 8px;
   border-radius: 2px;
 }
 
@@ -535,12 +948,23 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 
 .dashboard__btn-delete:hover { background: rgba(192, 57, 43, 0.12); }
 
-/* FORM */
+/* Form */
 .dashboard__form-wrap {
   background: var(--white);
   border-radius: 3px;
   border: 1px solid rgba(45, 74, 45, 0.08);
   padding: 40px;
+}
+
+.dashboard__form-error {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #C0392B;
+  background: rgba(192, 57, 43, 0.06);
+  border: 1px solid rgba(192, 57, 43, 0.2);
+  border-radius: 2px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
 }
 
 .dashboard__form { display: flex; flex-direction: column; gap: 28px; }
@@ -581,7 +1005,6 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 .dashboard__field select:focus,
 .dashboard__field textarea:focus { border-color: var(--forest); background: var(--white); }
 
-/* Upload */
 .dashboard__upload {
   border: 2px dashed rgba(45, 74, 45, 0.2);
   border-radius: 3px;
@@ -596,18 +1019,9 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
 
 .dashboard__upload:hover { border-color: var(--wood); background: rgba(201, 168, 124, 0.04); }
 .dashboard__upload.has-image { padding: 0; overflow: hidden; }
+.dashboard__upload-preview { width: 100%; height: 200px; object-fit: cover; display: block; }
 
-.dashboard__upload-preview {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
-}
-
-.dashboard__upload-placeholder {
-  text-align: center;
-  color: var(--mist);
-}
+.dashboard__upload-placeholder { text-align: center; color: var(--mist); }
 
 .dashboard__upload-icon {
   font-size: 28px;
@@ -629,71 +1043,6 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   letter-spacing: 1px;
 }
 
-/* Specs */
-.dashboard__specs-section { display: flex; flex-direction: column; gap: 12px; }
-
-.dashboard__specs-section > label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--mist);
-}
-
-.dashboard__specs-grid { display: flex; flex-direction: column; gap: 10px; }
-
-.dashboard__spec-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr 36px;
-  gap: 10px;
-  align-items: center;
-}
-
-.dashboard__spec-row input {
-  font-family: var(--font-body);
-  font-size: 13px;
-  color: var(--ink);
-  background: var(--linen);
-  border: 1px solid rgba(45, 74, 45, 0.15);
-  border-radius: 2px;
-  padding: 10px 14px;
-  outline: none;
-}
-
-.dashboard__spec-remove {
-  width: 36px; height: 36px;
-  background: rgba(192, 57, 43, 0.08);
-  color: #C0392B;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.2s;
-}
-
-.dashboard__spec-remove:hover { background: rgba(192, 57, 43, 0.15); }
-
-.dashboard__add-spec {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--forest);
-  background: rgba(45, 74, 45, 0.06);
-  border: 1px dashed rgba(45, 74, 45, 0.2);
-  border-radius: 2px;
-  padding: 10px;
-  cursor: pointer;
-  transition: all 0.25s;
-  width: fit-content;
-}
-
-.dashboard__add-spec:hover { background: rgba(45, 74, 45, 0.1); border-color: var(--forest); }
-
-/* Form footer */
 .dashboard__form-footer {
   display: flex;
   justify-content: flex-end;
@@ -732,6 +1081,7 @@ const deleteProduct = (id) => { products.value = products.value.filter(p => p.id
   transition: all 0.25s;
 }
 
-.dashboard__btn-submit:hover { background: var(--forest-dark); transform: translateY(-1px); }
+.dashboard__btn-submit:hover:not(:disabled) { background: var(--forest-dark); transform: translateY(-1px); }
 .dashboard__btn-submit.success { background: #2D6A2D; }
+.dashboard__btn-submit:disabled { opacity: 0.6; cursor: wait; }
 </style>

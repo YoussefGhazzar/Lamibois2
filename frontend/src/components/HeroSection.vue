@@ -1,11 +1,9 @@
 <template>
-  <section id="accueil" class="hero">
+  <section id="accueil" class="hero" :class="{ 'hero--rtl': isRTL }">
 
-    <!-- Background: animated wood panels -->
+    <!-- Background: real image -->
     <div class="hero__bg">
-      <div class="hero__panels">
-        <div v-for="i in 6" :key="i" class="hero__panel" :class="`hero__panel--${i}`"></div>
-      </div>
+      <img :src="heroImage" alt="Entrepôt Lamibois" class="hero__bg-img" />
       <div class="hero__overlay"></div>
       <div class="hero__grain"></div>
     </div>
@@ -13,41 +11,40 @@
     <!-- Floating product badge -->
     <div class="hero__badge" :class="{ visible: badgeVisible }">
       <div class="hero__badge-dot"></div>
-      <span>Stock disponible · Livraison 48h</span>
+      <span>{{ t('hero.badge') }}</span>
     </div>
 
     <!-- Content -->
     <div class="hero__content" :class="{ visible: contentVisible }">
       <p class="hero__eyebrow">
         <span class="hero__eyebrow-line"></span>
-        Distributeur B2B de panneaux bois
+        {{ t('hero.eyebrow') }}
       </p>
 
       <h1 class="hero__title">
-        La matière<br>
-        <em>noble</em> au service<br>
-        de vos projets
+        {{ t('hero.title_line1') }}<br>
+        <em>{{ t('hero.title_em') }}</em> {{ t('hero.title_line2') }}<br>
+        {{ t('hero.title_line3') }}
       </h1>
 
       <p class="hero__subtitle">
-        MDF mélaminé, contreplaqué, bois massif — des matériaux de qualité
-        certifiée, disponibles immédiatement pour les professionnels.
+        {{ t('hero.subtitle') }}
       </p>
 
       <div class="hero__actions">
         <button class="btn-primary" @click="$router.push('/produits')">
-          Découvrir nos produits
+          {{ t('hero.cta_primary') }}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <button class="btn-ghost" @click="$router.push('/contact')">Nous contacter</button>
+        <button class="btn-ghost" @click="$router.push('/contact')">{{ t('hero.cta_secondary') }}</button>
       </div>
 
       <!-- Scroll hint -->
       <div class="hero__scroll">
         <div class="hero__scroll-line"></div>
-        <span>Défiler</span>
+        <span>{{ t('hero.scroll') }}</span>
       </div>
     </div>
 
@@ -61,8 +58,8 @@
       >
         <div class="hero__card-visual" :style="card.style"></div>
         <div class="hero__card-info">
-          <span class="hero__card-tag">{{ card.tag }}</span>
-          <p class="hero__card-name">{{ card.name }}</p>
+          <span class="hero__card-tag">{{ t(`hero.cards.${card.key}.tag`) }}</span>
+          <p class="hero__card-name">{{ t(`hero.cards.${card.key}.name`) }}</p>
         </div>
         <div class="hero__card-shine"></div>
       </div>
@@ -72,7 +69,7 @@
     <div class="hero__stats">
       <div v-for="(stat, i) in stats" :key="i" class="hero__stat">
         <strong>{{ stat.value }}</strong>
-        <span>{{ stat.label }}</span>
+        <span>{{ t(`hero.stats.${stat.key}`) }}</span>
       </div>
     </div>
 
@@ -80,45 +77,29 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import heroImage from '@/assets/products/bois_dur.png'
+
+const { t, locale } = useI18n()
 
 const contentVisible = ref(false)
 const cardsVisible   = ref(false)
 const badgeVisible   = ref(false)
 
-const scrollTo = (id) => {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
-}
+const isRTL = computed(() => locale.value === 'ar')
 
 const stats = [
-  { value: '15+', label: 'Années d\'expérience' },
-  { value: '200+', label: 'Références produits' },
-  { value: '500+', label: 'Clients professionnels' },
-  { value: '48h', label: 'Délai de livraison' },
+  { key: 'experience', value: '15+' },
+  { key: 'references',  value: '200+' },
+  { key: 'clients',     value: '500+' },
+  { key: 'delivery',    value: '48h' },
 ]
 
 const productCards = [
-  {
-    name: 'MDF Mélaminé Blanc',
-    tag: 'Bestseller',
-    style: {
-      background: 'linear-gradient(135deg, #F0ECE4 0%, #E8E0D0 40%, #D8CFC0 100%)',
-    }
-  },
-  {
-    name: 'MDF Mélaminé Chêne',
-    tag: 'Naturel',
-    style: {
-      background: 'linear-gradient(135deg, #C4975A 0%, #A87840 40%, #8B6030 100%)',
-    }
-  },
-  {
-    name: 'MDF Mélaminé Wengé',
-    tag: 'Premium',
-    style: {
-      background: 'linear-gradient(135deg, #3D2B1F 0%, #2A1D14 50%, #1A1008 100%)',
-    }
-  },
+  { key: 'mdf_white', style: { background: 'linear-gradient(135deg, #F0ECE4 0%, #E8E0D0 40%, #D8CFC0 100%)' } },
+  { key: 'mdf_oak',   style: { background: 'linear-gradient(135deg, #C4975A 0%, #A87840 40%, #8B6030 100%)' } },
+  { key: 'mdf_wenge', style: { background: 'linear-gradient(135deg, #3D2B1F 0%, #2A1D14 50%, #1A1008 100%)' } },
 ]
 
 onMounted(() => {
@@ -145,42 +126,34 @@ onMounted(() => {
   z-index: 0;
 }
 
-.hero__panels {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 2px;
-  transform: skewX(-8deg) scale(1.15);
-}
-
-.hero__panel {
+.hero__bg-img {
+  width: 100%;
   height: 100%;
-  animation: panelShift 12s ease-in-out infinite alternate;
-}
-
-.hero__panel--1 { background: linear-gradient(180deg, #2A1D14 0%, #3D2B1F 40%, #2A1D14 100%); animation-delay: 0s; }
-.hero__panel--2 { background: linear-gradient(180deg, #A87840 0%, #C4975A 40%, #8B6030 100%); animation-delay: 0.3s; }
-.hero__panel--3 { background: linear-gradient(180deg, #F0ECE4 0%, #E0D8C8 40%, #D0C8B8 100%); animation-delay: 0.6s; }
-.hero__panel--4 { background: linear-gradient(180deg, #3D2B1F 0%, #5C3D25 40%, #3D2B1F 100%); animation-delay: 0.9s; }
-.hero__panel--5 { background: linear-gradient(180deg, #C4975A 0%, #A87840 40%, #C4975A 100%); animation-delay: 1.2s; }
-.hero__panel--6 { background: linear-gradient(180deg, #E8E0D0 0%, #F0ECE4 40%, #D8D0C0 100%); animation-delay: 1.5s; }
-
-@keyframes panelShift {
-  0%   { transform: translateY(0px); }
-  100% { transform: translateY(-20px); }
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }
 
 .hero__overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg,
-      rgba(17, 29, 17, 0.97) 0%,
-      rgba(17, 29, 17, 0.88) 40%,
-      rgba(17, 29, 17, 0.50) 65%,
-      rgba(17, 29, 17, 0.20) 100%
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(17, 29, 17, 0.95) 0%,
+    rgba(17, 29, 17, 0.85) 40%,
+    rgba(17, 29, 17, 0.55) 65%,
+    rgba(17, 29, 17, 0.25) 100%
+  );
+}
+
+.hero--rtl .hero__overlay {
+  background: linear-gradient(
+    270deg,
+    rgba(17, 29, 17, 0.95) 0%,
+    rgba(17, 29, 17, 0.85) 40%,
+    rgba(17, 29, 17, 0.55) 65%,
+    rgba(17, 29, 17, 0.25) 100%
+  );
 }
 
 .hero__grain {
@@ -213,6 +186,11 @@ onMounted(() => {
   opacity: 0;
   transform: translateY(-8px);
   transition: all 0.6s ease;
+}
+
+.hero--rtl .hero__badge {
+  right: auto;
+  left: 60px;
 }
 
 .hero__badge.visible { opacity: 1; transform: translateY(0); }
@@ -309,6 +287,8 @@ onMounted(() => {
   border-radius: 2px;
   transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
   box-shadow: 0 4px 24px rgba(201, 168, 124, 0.25);
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
@@ -328,6 +308,7 @@ onMounted(() => {
   border: 1px solid rgba(245, 240, 232, 0.25);
   border-radius: 2px;
   transition: border-color 0.25s, color 0.25s, transform 0.2s;
+  cursor: pointer;
 }
 
 .btn-ghost:hover {
@@ -375,6 +356,11 @@ onMounted(() => {
   transition: opacity 0.8s ease;
 }
 
+.hero--rtl .hero__cards {
+  right: auto;
+  left: 60px;
+}
+
 .hero__cards.visible { opacity: 1; }
 
 .hero__card {
@@ -400,10 +386,13 @@ onMounted(() => {
   transform: translateX(-4px) scale(1.02);
 }
 
+.hero--rtl .hero__card:hover {
+  transform: translateX(4px) scale(1.02);
+}
+
 .hero__card-visual {
   position: absolute;
   inset: 0;
-  /* Simulate wood grain lines */
   background-image: repeating-linear-gradient(
     175deg,
     transparent 0px,
@@ -411,7 +400,6 @@ onMounted(() => {
     rgba(0,0,0,0.06) 8px,
     rgba(0,0,0,0.06) 9px
   );
-  background-size: 100% 100%;
 }
 
 .hero__card-info {
@@ -470,6 +458,13 @@ onMounted(() => {
 
 .hero__stat:last-child { border-right: none; }
 
+.hero--rtl .hero__stat {
+  border-right: none;
+  border-left: 1px solid rgba(201, 168, 124, 0.1);
+}
+
+.hero--rtl .hero__stat:last-child { border-left: none; }
+
 .hero__stat strong {
   font-family: var(--font-display);
   font-size: 30px;
@@ -497,6 +492,7 @@ onMounted(() => {
   .hero__title { font-size: 44px; }
   .hero__stats { grid-template-columns: repeat(2, 1fr); }
   .hero__stat:nth-child(2) { border-right: none; }
+  .hero--rtl .hero__stat:nth-child(2) { border-left: none; }
   .hero__badge { display: none; }
 }
 </style>

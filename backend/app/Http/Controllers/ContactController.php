@@ -30,16 +30,18 @@ class ContactController extends Controller
      */
   public function store(Request $request)
 {
-    $contact = Contact::create([
-        'name' => $request->name,
-        'name_company' => $request->name_company,
-        'email' => $request->email,
-        'phone' => $request->phone,
-        'project_type' => $request->project_type,
-        'message' => $request->message,
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'name_company' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'nullable|string|max:20',
+        'project_type' => 'nullable|string',
+        'message' => 'required|string|max:1000',
     ]);
 
-    Mail::to('youssefghazzar15@gmail.com')
+    $contact = Contact::create($validated);
+
+    Mail::to('Lamibois1@gmail.com')
         ->send(new ContactMail($contact));
 
     return response()->json([
