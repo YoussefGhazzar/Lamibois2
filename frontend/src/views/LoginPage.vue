@@ -67,7 +67,10 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import axios from 'axios'
 
+const router = useRouter()
 const focused      = ref(null)
 const showPassword = ref(false)
 const loading      = ref(false)
@@ -80,10 +83,23 @@ const handleLogin = async () => {
   errors.email    = form.email    ? '' : 'Email requis'
   errors.password = form.password ? '' : 'Mot de passe requis'
   if (errors.email || errors.password) return
+
   loading.value = true
-  await new Promise(r => setTimeout(r, 1500))
-  loading.value = false
-  loginError.value = 'Email ou mot de passe incorrect.'
+  loginError.value = ''
+
+  try {
+    const response = await axios.post('http://127.0.0.1:8001/api/login', {
+      email: form.email,
+      password: form.password,
+    })
+
+    localStorage.setItem('access_token', response.data.access_token)
+    router.push('/dashboard')
+  } catch (error) {
+    loginError.value = 'Email ou mot de passe incorrect.'
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 

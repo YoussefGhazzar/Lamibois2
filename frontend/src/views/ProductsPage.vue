@@ -1,28 +1,24 @@
 <template>
-  <div class="products-page">
+  <div class="products-page" :dir="dir">
     <TheNavbar />
 
     <!-- PAGE HERO -->
     <section class="page-hero">
       <div class="page-hero__bg">
-        <img src="@/assets/products/bois_dur.png" alt="Entrepôt Lamibois" class="page-hero__img" />
+        <img src="@/assets/products/bois_dur.png" :alt="t('productsPage.hero.image_alt')" class="page-hero__img" />
         <div class="page-hero__overlay"></div>
       </div>
       <div class="page-hero__content">
         <p class="page-hero__eyebrow">
           <span class="page-hero__eyebrow-line"></span>
-          Catalogue complet
+          {{ t('productsPage.hero.eyebrow') }}
         </p>
-        <h1 class="page-hero__title">Nos <em>Produits</em></h1>
+        <h1 class="page-hero__title">{{ t('productsPage.hero.title_prefix') }} <em>{{ t('productsPage.hero.title_highlight') }}</em></h1>
         <p class="page-hero__sub">
-          Une gamme complète de panneaux de qualité certifiée pour tous vos projets professionnels.
+          {{ t('productsPage.hero.subtitle') }}
         </p>
       </div>
-      <div class="page-hero__breadcrumb">
-        <span @click="goHome">Accueil</span>
-        <span class="sep">→</span>
-        <span class="current">Produits</span>
-      </div>
+      
     </section>
 
     <!-- FILTER BAR -->
@@ -35,7 +31,7 @@
           :class="{ active: activeCategory === cat }"
           @click="activeCategory = cat"
         >
-          {{ cat }}
+          {{ cat === 'Tous' ? t('productsPage.filter.all') : cat }}
           <span class="filter-bar__count">{{ countByCategory(cat) }}</span>
         </button>
       </div>
@@ -46,7 +42,7 @@
       <div class="catalog__inner">
         <div class="catalog__loading">
           <div class="catalog__spinner"></div>
-          <p>Chargement des produits…</p>
+          <p>{{ t('productsPage.loading') }}</p>
         </div>
       </div>
     </div>
@@ -56,7 +52,7 @@
       <div class="catalog__inner">
         <div class="catalog__empty">
           <p>{{ error }}</p>
-          <button class="catalog__retry-btn" @click="fetchProducts">Réessayer</button>
+          <button class="catalog__retry-btn" @click="fetchProducts">{{ t('productsPage.error.retry') }}</button>
         </div>
       </div>
     </div>
@@ -66,7 +62,7 @@
       <div class="catalog__inner">
         <div class="catalog__meta">
           <p class="catalog__count">
-            <span>{{ filteredProducts.length }}</span> produit{{ filteredProducts.length > 1 ? 's' : '' }} trouvé{{ filteredProducts.length > 1 ? 's' : '' }}
+            <span>{{ filteredProducts.length }}</span> {{ t('productsPage.count.found', filteredProducts.length) }}
           </p>
         </div>
 
@@ -93,21 +89,22 @@
                   <span class="spec-value">{{ spec.value }}</span>
                 </div>
                 <button class="catalog__card-devis" @click="goContact">
-                  Demander un devis →
+                  {{ t('productsPage.card.quote_request') }} →
                 </button>
               </div>
             </div>
 
             <div class="catalog__card-info">
-              <span class="catalog__card-cat">{{ product.category }}</span>
-              <h3 class="catalog__card-name">{{ product.name }}</h3>
-              <p class="catalog__card-desc">{{ product.desc }}</p>
+              <span class="catalog__card-cat">{{ translateCategory( product.category) }}</span>
+  <h3 class="catalog__card-name">{{ translateProductField(product.id, 'name', product.name) }}</h3>
+  <p class="catalog__card-desc">{{ translateProductField(product.id, 'desc', product.desc) }}</p>
+
               <div class="catalog__card-footer">
                 <div class="catalog__card-tags">
                   <span v-for="tag in product.tags" :key="tag" class="tag">{{ tag }}</span>
                 </div>
                 <button class="catalog__card-btn" @click="goContact">
-                  Devis
+                  {{ t('productsPage.card.quote_button') }}
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -118,7 +115,7 @@
         </div>
 
         <div v-if="filteredProducts.length === 0" class="catalog__empty">
-          <p>Aucun produit dans cette catégorie.</p>
+          <p>{{ t('productsPage.empty') }}</p>
         </div>
       </div>
     </section>
@@ -127,27 +124,30 @@
     <div class="cta-band">
       <div class="cta-band__inner">
         <div>
-          <h2 class="cta-band__title">Vous ne trouvez pas ce qu'il vous faut ?</h2>
-          <p class="cta-band__sub">Notre équipe peut vous sourcer des matériaux sur mesure.</p>
+          <h2 class="cta-band__title">{{ t('productsPage.cta.title') }}</h2>
+          <p class="cta-band__sub">{{ t('productsPage.cta.subtitle') }}</p>
         </div>
-        <button class="cta-band__btn" @click="goContact">Contacter notre équipe →</button>
+        <button class="cta-band__btn" @click="goContact">{{ t('productsPage.cta.button') }} →</button>
       </div>
     </div>
 
     <TheFooter />
   </div>
 </template>
-
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import TheNavbar from '@/components/TheNavbar.vue'
 import TheFooter from '@/components/TheFooter.vue'
 
+const { t, te, locale } = useI18n()
 const router    = useRouter()
 const goHome    = () => router.push('/')
 const goContact = () => router.push('/contact')
+
+const dir = computed(() => (locale.value === 'ar' ? 'rtl' : 'ltr'))
 
 // ── State ─────────────────────────────────────────────────────────────────────
 const products       = ref([])
@@ -155,11 +155,33 @@ const loading        = ref(true)
 const error          = ref(null)
 const activeCategory = ref('Tous')
 
-// Laravel base URL — no Vite proxy needed
 const API_BASE = 'http://127.0.0.1:8001'
 
 const onImgError = (e) => {
   e.target.style.opacity = '0.3'
+}
+
+// ── i18n helpers pour données dynamiques (catégories + produits) ──────────────
+// IMPORTANT : ce mapping doit être déclaré AVANT toute fonction qui l'utilise
+const categoryKeyMap = {
+  'Latté': 'latte',
+  'MDF Mélaminé': 'mdf_melamine',
+  'Contreplaqué': 'plywood',
+  'Bois Massif': 'solid_wood',
+  'OSB': 'osb',
+}
+
+const translateCategory = (rawCategory) => {
+  const key = categoryKeyMap[rawCategory]
+  if (key && te(`productsPage.categories.${key}`)) {
+    return t(`productsPage.categories.${key}`)
+  }
+  return rawCategory
+}
+
+const translateProductField = (id, field, fallback) => {
+  const key = `productsPage.items.${id}.${field}`
+  return te(key) ? t(key) : fallback
 }
 
 // ── Fetch ─────────────────────────────────────────────────────────────────────
@@ -170,10 +192,6 @@ const fetchProducts = async () => {
   try {
     const response = await axios.get(`${API_BASE}/api/products`)
 
-    // Handle all possible Laravel response shapes:
-    // - plain array:          [...]
-    // - resource collection:  { data: [...] }
-    // - custom key:           { products: [...] }
     let raw = response.data
     if (!Array.isArray(raw)) {
       raw = raw.data ?? raw.products ?? Object.values(raw)[0] ?? []
@@ -185,7 +203,6 @@ const fetchProducts = async () => {
       category: p.category   ?? 'Autre',
       featured: p.featured   ?? false,
       badge:    p.badge      ?? null,
-      // p.image is the bare filename stored in storage/app/public/products/
       image: p.image,
       desc:     p.description ?? p.desc ?? '',
       specs:    Array.isArray(p.specs) ? p.specs : [],
@@ -194,7 +211,7 @@ const fetchProducts = async () => {
 
   } catch (err) {
     console.error('[ProductsView] API error:', err)
-    error.value = 'Impossible de charger les produits. Vérifiez que Laravel tourne sur le port 8000.'
+    error.value = t('productsPage.error.message')
   } finally {
     loading.value = false
   }

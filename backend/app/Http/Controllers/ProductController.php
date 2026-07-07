@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -57,8 +58,7 @@ public function index()
             'finition'    => 'required|string|max:255',
             'image'       => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:2048', // Validation rules for files
             'description' => 'nullable|string',
-            'price'       => 'required|numeric|min:0',
-            'norm'        => 'required|string|max:255',
+            'norm'        => 'nullable|string|max:255',
             'category'    => 'required|string|max:255',
         ]);
 
@@ -82,24 +82,50 @@ public function index()
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+     public function update(Request $request, Product $product)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name'        => 'required|string|max:255',
+            'category'    => 'required|string|max:255',
+            'space'       => 'nullable|string|max:255',
+            'format'      => 'nullable|string|max:255',
+            'finition'    => 'nullable|string|max:255',
+            'norm'        => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'price'       => 'required|numeric|min:0',
+            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
-        $product->update($request->all());
-        return response()->json($product);
+        if ($request->hasFile('image')) {
+            // Delete old image from storage
+
+            if ($product->image) {
+                Storage::disk('public')->delete('products/' . $product->image);
+            }
+            $path = $request->file('image')->store('products', 'public');
+            $validated['image'] = basename($path);
+        }
+
+        $product->update($validated);
+
+        return response()->json([
+            'message' => 'Produit mis à jour avec succès.',
+            'product' => $product,
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Product $product)
-    {
+public function destroy(Product $product)
+{
+    try {
         $product->delete();
-        return response()->json(null, 204);
+
+        return response()->json([
+            'success' => true
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 }
