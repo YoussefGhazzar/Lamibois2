@@ -1,17 +1,17 @@
 <template>
-  <footer class="footer">
+  <footer class="footer" :class="{ 'footer--rtl': isRTL }">
 
     <!-- Top band -->
     <div class="footer__cta-band">
       <div class="footer__cta-content">
         <h2 class="footer__cta-title">
-          Prêt à commencer<br>votre <em>prochain projet</em> ?
+          {{ t('footer.cta_title_line1') }}<br>{{ t('footer.cta_title_line2') }} <em>{{ t('footer.cta_title_em') }}</em>
         </h2>
-        <p class="footer__cta-sub">Contactez notre équipe pour un devis personnalisé.</p>
+        <p class="footer__cta-sub">{{ t('footer.cta_sub') }}</p>
       </div>
       <div class="footer__cta-actions">
-        <button class="footer__btn-primary" @click="scrollTo('contact')">Demander un devis →</button>
-        <span class="footer__response-time">Réponse sous 24h</span>
+        <button class="footer__btn-primary" @click="$router.push('/contact')">{{ t('footer.cta_btn') }} →</button>
+        <span class="footer__response-time">{{ t('footer.response_time') }}</span>
       </div>
     </div>
 
@@ -24,19 +24,16 @@
 
     <!-- Main footer -->
     <div class="footer__main">
+
+      <!-- Brand column -->
       <div class="footer__brand">
         <div class="footer__logo">
-          <div class="footer__logo-mark">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-              <circle cx="20" cy="20" r="18.5" stroke="#C9A87C" stroke-width="1.5"/>
-              <text x="8" y="26" font-family="Cormorant Garamond, serif" font-size="16" font-weight="600" fill="#C9A87C">LB</text>
-            </svg>
-          </div>
+          <img :src="logo" alt="Lamibois" class="footer__logo-img" />
           <span class="footer__logo-text">LAMIBOIS</span>
         </div>
         <p class="footer__tagline">
-          Distributeur spécialisé en panneaux de bois<br>
-          pour les professionnels du Maroc.
+          {{ t('footer.tagline_line1') }}<br>
+          {{ t('footer.tagline_line2') }}
         </p>
         <div class="footer__certifications">
           <span class="footer__cert">E1</span>
@@ -46,30 +43,25 @@
       </div>
 
       <div class="footer__col">
-        <p class="footer__col-title">Produits</p>
+        <p class="footer__col-title">{{ t('footer.products_title') }}</p>
         <ul class="footer__links">
-          <li>MDF Mélaminé</li>
-          <li>Contreplaqué</li>
-          <li>Bois Massif</li>
-          <li>MDF Brut</li>
-          <li>OSB</li>
-          <li>Accessoires</li>
+          <li v-for="prod in productLinks" :key="prod">{{ t(`footer.products.${prod}`) }}</li>
         </ul>
       </div>
 
       <div class="footer__col">
-        <p class="footer__col-title">Entreprise</p>
+        <p class="footer__col-title">{{ t('footer.company_title') }}</p>
         <ul class="footer__links">
-          <li @click="scrollTo('apropos')">À propos</li>
-          <li>Certifications</li>
-          <li>Livraison</li>
-          <li>Partenaires</li>
-          <li @click="scrollTo('contact')">Contact</li>
+          <li @click="scrollTo('apropos')">{{ t('footer.company.about') }}</li>
+          <li>{{ t('footer.company.certifications') }}</li>
+          <li>{{ t('footer.company.delivery') }}</li>
+          <li>{{ t('footer.company.partners') }}</li>
+          <li @click="$router.push('/contact')">{{ t('footer.company.contact') }}</li>
         </ul>
       </div>
 
       <div class="footer__col">
-        <p class="footer__col-title">Contact</p>
+        <p class="footer__col-title">{{ t('footer.contact_title') }}</p>
         <ul class="footer__contacts">
           <li>
             <span class="footer__contact-icon">◈</span>
@@ -81,24 +73,35 @@
           </li>
           <li>
             <span class="footer__contact-icon">◈</span>
-            <span>Maroc</span>
+            <span>{{ t('footer.country') }}</span>
           </li>
         </ul>
-        <p class="footer__hours">Lun – Ven · 8h00 – 18h00</p>
+        <p class="footer__hours">{{ t('footer.hours') }}</p>
       </div>
+
     </div>
 
     <!-- Bottom bar -->
     <div class="footer__bottom">
-      <span class="footer__copy">© 2025 Lamibois · Tous droits réservés</span>
-      <span class="footer__made">Fait avec soin au Maroc 🇲🇦</span>
+      <span class="footer__copy">{{ t('footer.copyright') }}</span>
+      <span class="footer__made">{{ t('footer.made_in') }} 🇲🇦</span>
     </div>
 
   </footer>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import logo from '@/assets/lamiboislogo.png'
+
+const { t, locale } = useI18n()
+
+const isRTL = computed(() => locale.value === 'ar')
+
 const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+
+const productLinks = ['mdf_melamine', 'plywood', 'solid_wood', 'raw_mdf', 'osb', 'accessories']
 
 const panelColors = [
   '#F5F0E8', '#E8E0D0', '#C4975A', '#A87840',
@@ -110,6 +113,12 @@ const panelColors = [
 <style scoped>
 .footer {
   background: var(--forest-deep);
+}
+
+.footer__logo-img {
+  height: 70px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* CTA band */
@@ -147,6 +156,10 @@ const panelColors = [
   gap: 10px;
 }
 
+.footer--rtl .footer__cta-actions {
+  align-items: flex-start;
+}
+
 .footer__btn-primary {
   background: var(--wood);
   color: var(--forest-deep);
@@ -159,6 +172,8 @@ const panelColors = [
   border-radius: 2px;
   white-space: nowrap;
   transition: background 0.25s, transform 0.2s;
+  border: none;
+  cursor: pointer;
 }
 
 .footer__btn-primary:hover {
@@ -251,6 +266,8 @@ const panelColors = [
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding: 0;
+  margin: 0;
 }
 
 .footer__links li {
@@ -268,6 +285,8 @@ const panelColors = [
   display: flex;
   flex-direction: column;
   gap: 14px;
+  padding: 0;
+  margin: 0;
 }
 
 .footer__contacts li {
@@ -279,7 +298,12 @@ const panelColors = [
   color: rgba(245, 240, 232, 0.5);
 }
 
-.footer__contact-icon { color: var(--wood); font-size: 10px; margin-top: 3px; flex-shrink: 0; }
+.footer__contact-icon {
+  color: var(--wood);
+  font-size: 10px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
 
 .footer__hours {
   margin-top: 20px;

@@ -1,0 +1,299 @@
+{
+  "menu": {
+    "home": "Inicio",
+    "products": "Productos",
+    "about": "Nosotros",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "badge": "En stock · Entrega en 48h",
+    "eyebrow": "Distribuidor B2B de paneles de madera",
+    "title_line1": "El",
+    "title_em": "material",
+    "title_line2": "noble",
+    "title_line3": "para sus proyectos",
+    "subtitle": "MDF melaminado, contrachapado, madera maciza — materiales de calidad certificada, disponibles de inmediato para profesionales.",
+    "cta_primary": "Descubrir nuestros productos",
+    "cta_secondary": "Contáctenos",
+    "scroll": "Desplazar",
+    "cards": {
+      "mdf_white": { "name": "MDF Melaminado Blanco", "tag": "Más vendido" },
+      "mdf_oak": { "name": "MDF Melaminado Roble", "tag": "Natural" },
+      "mdf_wenge": { "name": "MDF Melaminado Wengué", "tag": "Premium" }
+    },
+    "stats": {
+      "experience": "Años de experiencia",
+      "references": "Referencias de productos",
+      "clients": "Clientes profesionales",
+      "delivery": "Plazo de entrega"
+    }
+  },
+  "products": {
+    "label": "Nuestras gamas",
+    "title_line1": "Paneles para",
+    "title_em": "cada aplicación",
+    "intro": "Una selección rigurosa de materiales para satisfacer las exigencias de carpinteros, instaladores, arquitectos y profesionales de la construcción.",
+    "view_sheet": "Ver ficha",
+    "view_all": "Ver catálogo completo",
+    "categories": {
+      "all": "Todos",
+      "mdf_melamine": "MDF Melaminado",
+      "plywood": "Contrachapado",
+      "solid_wood": "Madera Maciza",
+      "osb": "OSB"
+    },
+    "badges": {
+      "bestseller": "Más vendido",
+      "premium": "Premium",
+      "noble": "Noble"
+    },
+    "specs": {
+      "thickness": "Grosor",
+      "format": "Tamaño",
+      "finish": "Acabado",
+      "standard": "Norma",
+      "quality": "Calidad",
+      "section": "Sección",
+      "length": "Longitud",
+      "drying": "Secado",
+      "grade": "Clase"
+    },
+    "items": {
+      "1": {
+        "name": "MDF Melaminado Blanco Perla",
+        "desc": "Superficie lisa y uniforme, ideal para acabados de interior y fabricación de muebles.",
+        "specs": { "thickness": "16 / 18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Doble cara", "standard": "E1 / CARB P2" }
+      },
+      "2": {
+        "name": "MDF Melaminado Roble Natural",
+        "desc": "Decoración de madera auténtica con veta natural. Calidez y elegancia para sus acabados.",
+        "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Textura de madera", "standard": "E1" }
+      },
+      "3": {
+        "name": "MDF Melaminado Wengué",
+        "desc": "Decoración wengué oscura para interiores contemporáneos y de alto contraste.",
+        "specs": { "thickness": "18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Satinado", "standard": "E1" }
+      },
+      "4": {
+        "name": "Contrachapado de Álamo",
+        "desc": "Ligero y resistente, ideal para respaldo de muebles, embalaje y construcción ligera.",
+        "specs": { "thickness": "4 / 8 / 12 / 18 mm", "format": "2500 × 1220 mm", "quality": "BB/BB", "standard": "CE EN 636" }
+      },
+      "5": {
+        "name": "MDF Melaminado Gris Cemento",
+        "desc": "Aspecto cemento a la moda para acabados modernos e industriales.",
+        "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Mate estructurado", "standard": "E1" }
+      },
+      "6": {
+        "name": "Madera Maciza de Haya",
+        "desc": "Madera maciza de calidad superior para ebanistería y fabricación de muebles de alta gama.",
+        "specs": { "section": "A medida", "length": "Hasta 4000 mm", "drying": "KD 8-12%", "grade": "A/B" }
+      }
+    }
+  },
+  "contact": {
+    "label": "Contacto",
+    "title_line1": "Hablemos de",
+    "title_line2": "su",
+    "title_em": "proyecto",
+    "desc": "Nuestro equipo comercial responde a todas las solicitudes de presupuesto, preguntas técnicas e información de productos en un plazo de 24 horas.",
+    "details": {
+      "email": { "label": "Correo electrónico" },
+      "phone": { "label": "Teléfono" },
+      "whatsapp": { "label": "WhatsApp", "value": "Escríbanos por WhatsApp" },
+      "address": { "label": "Dirección" },
+      "hours": { "label": "Horario", "value": "Lun – Vie · 8:00 – 18:00" }
+    },
+    "form": {
+      "name_label": "Nombre completo *",
+      "name_placeholder": "Ahmed Benali",
+      "company_label": "Empresa *",
+      "company_placeholder": "Carpintería Al Hadafa",
+      "email_label": "Correo electrónico profesional *",
+      "email_placeholder": "contact{'@'}suempresa.com",
+      "phone_label": "Teléfono",
+      "products_label": "Producto(s) de interés",
+      "products": {
+        "mdf_melamine": "MDF Melaminado",
+        "plywood": "Contrachapado",
+        "solid_wood": "Madera Maciza",
+        "raw_mdf": "MDF Crudo",
+        "osb": "OSB"
+      },
+      "message_label": "Su solicitud *",
+      "message_placeholder": "Describa su proyecto, cantidades deseadas, plazos...",
+      "submit": "Enviar solicitud",
+      "submitting": "Enviando...",
+      "submitted": "¡Mensaje enviado!",
+      "note": "Respuesta garantizada en 24 horas hábiles.",
+      "errors": {
+        "required": "Este campo es obligatorio",
+        "invalid_email": "Correo electrónico inválido",
+        "send_failed": "Error al enviar. Inténtelo de nuevo."
+      }
+    }
+  },
+  "productsPage": {
+    "categories": {
+      "melamine": "Melaminado",
+      "mdf": "MDF",
+      "hpl": "HPL",
+      "laminate": "Laminado",
+      "wood": "Madera",
+      "latte": "Tablero de Listones"
+    },
+    "items": {
+      "1": {
+        "name": "MDF HDF Hidrófugo",
+        "desc": "Panel MDF tratado para resistir la humedad (núcleo verde), resistente a la humedad. Ideal para zonas húmedas, baños y cocinas."
+      },
+      "2": {
+        "name": "MDF Alto Brillo",
+        "desc": "Superficie ultra brillante lacada de fábrica. Efecto espejo altamente resistente a los arañazos, perfecto para frentes modernos de cocina y vestidor."
+      },
+      "3": {
+        "name": "MDF Crudo",
+        "desc": "Panel MDF crudo de alta densidad, superficie lisa y uniforme. Base ideal para pintar, chapar o laminar."
+      },
+      "4": {
+        "name": "Panel Melaminado",
+        "desc": "Tablero de partículas (o MDF) recubierto en caliente y bajo presión con una lámina de papel decorativo impregnada de resina melamínica. Listo para usar, ofrece una superficie totalmente acabada y muy resistente al uso diario."
+      },
+      "5": {
+        "name": "Tablero de Listones Blanco",
+        "desc": "Panel formado por un núcleo de listones de madera maciza encolados, recubierto con caras lisas blancas. Ofrece una excelente estabilidad dimensional y alta resistencia."
+      },
+      "6": {
+        "name": "Panel HPL Compacto",
+        "desc": "Laminado HPL compacto de alta presión, extremadamente resistente a los impactos, la humedad y los agentes químicos. Ideal para espacios colectivos."
+      },
+      "7": {
+        "name": "Laminado Decorativo",
+        "desc": "Panel decorativo laminado con acabado de madera o piedra aplicado. Amplia gama de acabados para instalaciones de interior de alta gama."
+      },
+      "8": {
+        "name": "Madera Dura — Stock en Almacén",
+        "desc": "Amplia gama de maderas duras disponibles en stock: roble, haya, fresno, nogal. Calidad de ebanistería para muebles e instalaciones de alta gama."
+      }
+    },
+    "hero": {
+      "eyebrow": "Catálogo completo",
+      "title_prefix": "Nuestros",
+      "title_highlight": "Productos",
+      "subtitle": "Una gama completa de paneles de calidad certificada para todos sus proyectos profesionales.",
+      "image_alt": "Almacén de Lamibois"
+    },
+    "filter": {
+      "all": "Todos"
+    },
+    "loading": "Cargando productos…",
+    "error": {
+      "message": "No se pueden cargar los productos. Compruebe que Laravel esté funcionando en el puerto 8000.",
+      "retry": "Reintentar"
+    },
+    "count": {
+      "found": "producto encontrado | productos encontrados"
+    },
+    "card": {
+      "quote_request": "Solicitar presupuesto",
+      "quote_button": "Presupuesto"
+    },
+    "empty": "No hay productos en esta categoría.",
+    "cta": {
+      "title": "¿No encuentra lo que necesita?",
+      "subtitle": "Nuestro equipo puede conseguirle materiales personalizados.",
+      "button": "Contactar con nuestro equipo"
+    }
+  },
+  "why": {
+    "label": "Por qué Lamibois",
+    "title_line1": "Un socio de confianza",
+    "title_line2": "para",
+    "title_em": "profesionales",
+    "bottom_text": "¿Tiene preguntas sobre nuestros productos o plazos de entrega?",
+    "bottom_btn": "Hablar con un experto",
+    "cards": {
+      "stock": {
+        "title": "Stock permanente",
+        "body": "Más de 200 referencias disponibles de inmediato. Sin roturas de stock en nuestras gamas estándar, cero espera para sus proyectos."
+      },
+      "quality": {
+        "title": "Calidad certificada",
+        "body": "Todos nuestros paneles cumplen con las normas E1 y CARB P2. Cada lote se controla a la recepción para garantizar una calidad constante."
+      },
+      "delivery": {
+        "title": "Entrega en 48h",
+        "body": "Entrega rápida en todo Marruecos. Nuestra flota de transporte garantiza una manipulación cuidadosa de sus paneles hasta la obra."
+      },
+      "advice": {
+        "title": "Asesoramiento técnico",
+        "body": "Nuestro equipo técnico le acompaña en la elección del material más adecuado para su proyecto. Presupuesto personalizado en 24h."
+      },
+      "custom_cut": {
+        "title": "Corte a medida",
+        "body": "Servicio de corte por encargo para optimizar su material y reducir los recortes. Precisión al milímetro."
+      },
+      "pricing": {
+        "title": "Tarifas profesionales",
+        "body": "Precios adaptados a volúmenes profesionales con descuentos progresivos según su consumo mensual."
+      }
+    }
+  },
+  "footer": {
+    "cta_title_line1": "¿Listo para empezar",
+    "cta_title_line2": "su",
+    "cta_title_em": "próximo proyecto",
+    "cta_sub": "Contacte con nuestro equipo para un presupuesto personalizado.",
+    "cta_btn": "Solicitar presupuesto",
+    "response_time": "Respuesta en 24h",
+    "tagline_line1": "Distribuidor especializado en paneles de madera",
+    "tagline_line2": "para profesionales en Marruecos.",
+    "products_title": "Productos",
+    "products": {
+      "mdf_melamine": "MDF Melaminado",
+      "plywood": "Contrachapado",
+      "solid_wood": "Madera Maciza",
+      "raw_mdf": "MDF Crudo",
+      "osb": "OSB",
+      "accessories": "Accesorios"
+    },
+    "company_title": "Empresa",
+    "company": {
+      "about": "Nosotros",
+      "certifications": "Certificaciones",
+      "delivery": "Entrega",
+      "partners": "Socios",
+      "contact": "Contacto"
+    },
+    "contact_title": "Contacto",
+    "country": "Marruecos",
+    "hours": "Lun – Vie · 8:00 – 18:00",
+    "copyright": "© 2025 Lamibois · Todos los derechos reservados",
+    "made_in": "Hecho con dedicación en Marruecos"
+  },
+  "about": {
+    "label": "Sobre Lamibois",
+    "title_line1": "El arte de la madera, al",
+    "title_line2": "servicio de los",
+    "title_em": "artesanos",
+    "text1": "Desde hace más de 15 años, Lamibois es el socio de referencia de los profesionales de la madera en Marruecos. Distribuimos una gama completa de paneles de calidad certificada — MDF melaminado, contrachapado, madera maciza — directamente a carpinteros, arquitectos de interiores y empresas de instalación.",
+    "text2": "Nuestro compromiso es simple: ofrecer materiales de primera calidad, disponibles de inmediato, con un asesoramiento técnico adaptado a cada proyecto.",
+    "floating_label": "Años de experiencia",
+    "color_range_label": "GAMA DE COLORES",
+    "values": {
+      "quality": {
+        "title": "Calidad certificada",
+        "desc": "Todos nuestros productos cumplen con las normas europeas E1 y CARB."
+      },
+      "stock": {
+        "title": "Stock permanente",
+        "desc": "Más de 200 referencias disponibles de inmediato en nuestro almacén."
+      },
+      "expertise": {
+        "title": "Experiencia técnica",
+        "desc": "Nuestro equipo le asesora en la elección del material adecuado."
+      }
+    },
+    "cta": "Contactar con nuestro equipo"
+  }
+}

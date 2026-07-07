@@ -1,0 +1,300 @@
+{
+  "menu": {
+  "home": "Home",
+  "products": "Products",
+  "about": "About",
+  "contact": "Contact"
+},
+  "hero": {
+    "badge": "In stock · 48h delivery",
+    "eyebrow": "B2B wood panel distributor",
+    "title_line1": "The",
+    "title_em": "noble",
+    "title_line2": "material",
+    "title_line3": "for your projects",
+    "subtitle": "Melamine MDF, plywood, solid wood — certified quality materials, available immediately for professionals.",
+    "cta_primary": "Discover our products",
+    "cta_secondary": "Contact us",
+    "scroll": "Scroll",
+    "cards": {
+      "mdf_white": { "name": "White Melamine MDF", "tag": "Bestseller" },
+      "mdf_oak": { "name": "Oak Melamine MDF", "tag": "Natural" },
+      "mdf_wenge": { "name": "Wenge Melamine MDF", "tag": "Premium" }
+    },
+    "stats": {
+      "experience": "Years of experience",
+      "references": "Product references",
+      "clients": "Professional clients",
+      "delivery": "Delivery time"
+    }
+  },
+  "products": {
+  "label": "Our ranges",
+  "title_line1": "Panels for",
+  "title_em": "every application",
+  "intro": "A rigorously curated selection of materials to meet the demands of joiners, fitters, architects and building professionals.",
+  "view_sheet": "View sheet",
+  "view_all": "View full catalog",
+  "categories": {
+    "all": "All",
+    "mdf_melamine": "Melamine MDF",
+    "plywood": "Plywood",
+    "solid_wood": "Solid Wood",
+    "osb": "OSB"
+  },
+  "badges": {
+    "bestseller": "Bestseller",
+    "premium": "Premium",
+    "noble": "Noble"
+  },
+  "specs": {
+    "thickness": "Thickness",
+    "format": "Size",
+    "finish": "Finish",
+    "standard": "Standard",
+    "quality": "Quality",
+    "section": "Section",
+    "length": "Length",
+    "drying": "Drying",
+    "grade": "Grade"
+  },
+  "items": {
+    "1": {
+      "name": "Pearl White Melamine MDF",
+      "desc": "Smooth, uniform surface, ideal for interior fit-out and furniture making.",
+      "specs": { "thickness": "16 / 18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Double-sided", "standard": "E1 / CARB P2" }
+    },
+    "2": {
+      "name": "Natural Oak Melamine MDF",
+      "desc": "Authentic wood decor with natural grain. Warmth and elegance for your fit-outs.",
+      "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Wood texture", "standard": "E1" }
+    },
+    "3": {
+      "name": "Wenge Melamine MDF",
+      "desc": "Dark wenge decor for contemporary, high-contrast interiors.",
+      "specs": { "thickness": "18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Satin", "standard": "E1" }
+    },
+    "4": {
+      "name": "Poplar Plywood",
+      "desc": "Light and durable, ideal for furniture backing, packaging and light construction.",
+      "specs": { "thickness": "4 / 8 / 12 / 18 mm", "format": "2500 × 1220 mm", "quality": "BB/BB", "standard": "CE EN 636" }
+    },
+    "5": {
+      "name": "Concrete Grey Melamine MDF",
+      "desc": "On-trend concrete look for modern, industrial fit-outs.",
+      "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Structured matte", "standard": "E1" }
+    },
+    "6": {
+      "name": "Solid Beech Wood",
+      "desc": "Premium-grade solid wood for cabinetmaking and high-end furniture manufacturing.",
+      "specs": { "section": "Custom", "length": "Up to 4000 mm", "drying": "KD 8-12%", "grade": "A/B" }
+    }
+  }
+},
+"contact": {
+  "label": "Contact",
+  "title_line1": "Let's talk about",
+  "title_line2": "your",
+  "title_em": "project",
+  "desc": "Our sales team responds to all quote requests, technical questions and product information within 24 hours.",
+  "details": {
+    "email": { "label": "Email" },
+    "phone": { "label": "Phone" },
+    "whatsapp": { "label": "WhatsApp", "value": "Message us on WhatsApp" },
+    "address": { "label": "Address" },
+    "hours": { "label": "Hours", "value": "Mon – Fri · 8:00 AM – 6:00 PM" }
+  },
+  "form": {
+    "name_label": "Full name *",
+    "name_placeholder": "Ahmed Benali",
+    "company_label": "Company *",
+    "company_placeholder": "Al Hadafa Woodworking",
+    "email_label": "Business email *",
+    "email_placeholder": "contact{'@'}yourcompany.com",
+    "phone_label": "Phone",
+    "products_label": "Product(s) of interest",
+    "products": {
+      "mdf_melamine": "Melamine MDF",
+      "plywood": "Plywood",
+      "solid_wood": "Solid Wood",
+      "raw_mdf": "Raw MDF",
+      "osb": "OSB"
+    },
+    "message_label": "Your request *",
+    "message_placeholder": "Describe your project, desired quantities, timelines...",
+    "submit": "Send request",
+    "submitting": "Sending...",
+    "submitted": "Message sent!",
+    "note": "Guaranteed response within 24 business hours.",
+    "errors": {
+      "required": "This field is required",
+      "invalid_email": "Invalid email",
+      "send_failed": "Failed to send. Please try again."
+    }
+  }
+},
+
+  "productsPage": {
+  "categories": {
+    "melamine": "Melamine",
+    "mdf": "MDF",
+    "hpl": "HPL",
+    "laminate": "Laminate",
+    "wood": "Wood",
+    "latte": "Batten Board"
+  },
+  "items": {
+    "1": {
+      "name": "Moisture-Resistant HDF MDF",
+      "desc": "MDF panel treated for moisture resistance (green core), resistant to humidity. Ideal for wet rooms, bathrooms and kitchens."
+    },
+    "2": {
+      "name": "High Gloss MDF",
+      "desc": "Factory-lacquered ultra-glossy surface. High scratch-resistant mirror effect, perfect for modern kitchen and wardrobe fronts."
+    },
+    "3": {
+      "name": "Raw MDF",
+      "desc": "High-density raw MDF panel, smooth and uniform surface. Ideal base for painting, veneering or laminating."
+    },
+    "4": {
+      "name": "Melamine Panel",
+      "desc": "Particleboard (or MDF) covered under heat and pressure with a decorative paper sheet impregnated with melamine resin. Ready to use, offering a fully finished surface that's highly resistant to everyday wear."
+    },
+    "5": {
+      "name": "White Batten Board",
+      "desc": "Panel made of a core of glued solid wood battens, coated with smooth white faces. Offers excellent dimensional stability and high strength."
+    },
+    "6": {
+      "name": "HPL Compact Panel",
+      "desc": "High-pressure compact HPL laminate, extremely resistant to impact, moisture and chemical agents. Ideal for public/collective spaces."
+    },
+    "7": {
+      "name": "Decorative Laminate",
+      "desc": "Decorative laminate panel with applied wood or stone finish. Wide range of finishes for high-end interior fit-outs."
+    },
+    "8": {
+      "name": "Hardwood — Warehouse Stock",
+      "desc": "Wide range of hardwoods available in stock: oak, beech, ash, walnut. Cabinetmaking quality for premium furniture and fit-outs."
+    }
+  },
+  "hero": {
+    "eyebrow": "Full catalog",
+    "title_prefix": "Our",
+    "title_highlight": "Products",
+    "subtitle": "A complete range of certified-quality panels for all your professional projects.",
+    "image_alt": "Lamibois warehouse"
+  },
+  "filter": {
+    "all": "All"
+  },
+  "loading": "Loading products…",
+  "error": {
+    "message": "Unable to load products. Check that Laravel is running on port 8000.",
+    "retry": "Retry"
+  },
+  "count": {
+    "found": "product found | products found"
+  },
+  "card": {
+    "quote_request": "Request a quote",
+    "quote_button": "Quote"
+  },
+  "empty": "No products in this category.",
+  "cta": {
+    "title": "Can't find what you need?",
+    "subtitle": "Our team can source custom materials for you.",
+    "button": "Contact our team"
+  }
+},
+  "why": {
+  "label": "Why Lamibois",
+  "title_line1": "A trusted partner",
+  "title_line2": "for",
+  "title_em": "professionals",
+  "bottom_text": "Have questions about our products or lead times?",
+  "bottom_btn": "Talk to an expert",
+  "cards": {
+    "stock": {
+      "title": "Permanent stock",
+      "body": "Over 200 references available immediately. No shortages on our standard ranges, zero wait for your projects."
+    },
+    "quality": {
+      "title": "Certified quality",
+      "body": "All our panels meet E1 and CARB P2 standards. Every batch is checked on arrival to guarantee consistent quality."
+    },
+    "delivery": {
+      "title": "48h delivery",
+      "body": "Fast delivery across Morocco. Our transport fleet ensures careful handling of your panels all the way to the site."
+    },
+    "advice": {
+      "title": "Technical advice",
+      "body": "Our technical team helps you choose the material best suited to your project. Custom quote within 24h."
+    },
+    "custom_cut": {
+      "title": "Custom cutting",
+      "body": "Made-to-order cutting service to optimize your material and reduce waste. Millimeter precision."
+    },
+    "pricing": {
+      "title": "Professional rates",
+      "body": "Prices tailored to professional volumes, with progressive discounts based on your monthly consumption."
+    }
+  }
+},
+"footer": {
+  "cta_title_line1": "Ready to start",
+  "cta_title_line2": "your",
+  "cta_title_em": "next project",
+  "cta_sub": "Contact our team for a custom quote.",
+  "cta_btn": "Request a quote",
+  "response_time": "Response within 24h",
+  "tagline_line1": "Specialist distributor of wood panels",
+  "tagline_line2": "for professionals in Morocco.",
+  "products_title": "Products",
+  "products": {
+    "mdf_melamine": "Melamine MDF",
+    "plywood": "Plywood",
+    "solid_wood": "Solid Wood",
+    "raw_mdf": "Raw MDF",
+    "osb": "OSB",
+    "accessories": "Accessories"
+  },
+  "company_title": "Company",
+  "company": {
+    "about": "About",
+    "certifications": "Certifications",
+    "delivery": "Delivery",
+    "partners": "Partners",
+    "contact": "Contact"
+  },
+  "contact_title": "Contact",
+  "country": "Morocco",
+  "hours": "Mon – Fri · 8:00 AM – 6:00 PM",
+  "copyright": "© 2025 Lamibois · All rights reserved",
+  "made_in": "Made with care in Morocco"
+},
+"about": {
+  "label": "About Lamibois",
+  "title_line1": "The art of wood, at",
+  "title_line2": "the service of",
+  "title_em": "craftsmen",
+  "text1": "For over 15 years, Lamibois has been the go-to partner for wood professionals in Morocco. We distribute a complete range of certified-quality panels — melamine MDF, plywood, solid wood — directly to joiners, interior architects and fit-out companies.",
+  "text2": "Our commitment is simple: provide top-tier materials, available immediately, with technical advice tailored to each project.",
+  "floating_label": "Years of expertise",
+  "color_range_label": "COLOR RANGE",
+  "values": {
+    "quality": {
+      "title": "Certified quality",
+      "desc": "All our products meet European E1 and CARB standards."
+    },
+    "stock": {
+      "title": "Permanent stock",
+      "desc": "200+ references available immediately in our warehouse."
+    },
+    "expertise": {
+      "title": "Technical expertise",
+      "desc": "Our team advises you on choosing the right material."
+    }
+  },
+  "cta": "Contact our team"
+}
+}

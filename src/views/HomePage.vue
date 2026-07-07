@@ -3,9 +3,9 @@
     <TheNavbar />
     <HeroSection />
     <ProductsSection />
-    <AboutSection />
-    <WhyUsSection />
     <ContactSection />
+    <WhyUsSection />
+    
     <TheFooter />
   </div>
 </template>
@@ -14,7 +14,6 @@
 import TheNavbar from '@/components/TheNavbar.vue'
 import HeroSection from '@/components/HeroSection.vue'
 import ProductsSection from '@/components/ProductsSection.vue'
-import AboutSection from '@/components/AboutSection.vue'
 import WhyUsSection from '@/components/WhyUsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
 import TheFooter from '@/components/TheFooter.vue'

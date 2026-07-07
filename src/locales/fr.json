@@ -1,0 +1,300 @@
+{  "menu":{
+        "home": "Accueil",
+        "products": "Produits",
+        "about": "A propos",
+        "contact": "Contact"
+},
+  "hero": {
+    "badge": "Stock disponible · Livraison 48h",
+    "eyebrow": "Distributeur B2B de panneaux bois",
+    "title_line1": "La matière",
+    "title_em": "noble",
+    "title_line2": "au service de vos projets",
+    "title_line3": "",
+    "subtitle": "MDF mélaminé, contreplaqué, bois massif — des matériaux de qualité certifiée, disponibles immédiatement pour les professionnels.",
+    "cta_primary": "Découvrir nos produits",
+    "cta_secondary": "Nous contacter",
+    "scroll": "Défiler",
+    "cards": {
+      "mdf_white": { "name": "MDF Mélaminé Blanc", "tag": "Bestseller" },
+      "mdf_oak": { "name": "MDF Mélaminé Chêne", "tag": "Naturel" },
+      "mdf_wenge": { "name": "MDF Mélaminé Wengé", "tag": "Premium" }
+    },
+    "stats": {
+      "experience": "Années d'expérience",
+      "references": "Références produits",
+      "clients": "Clients professionnels",
+      "delivery": "Délai de livraison"
+    }
+  },
+  "products": {
+  "label": "Nos gammes",
+  "title_line1": "Des panneaux pour",
+  "title_em": "chaque application",
+  "intro": "Une sélection rigoureuse de matériaux pour répondre aux exigences des menuisiers, agenceurs, architectes et professionnels du bâtiment.",
+  "view_sheet": "Voir la fiche",
+  "view_all": "Voir tout le catalogue",
+  "categories": {
+    "all": "Tous",
+    "mdf_melamine": "MDF Mélaminé",
+    "plywood": "Contreplaqué",
+    "solid_wood": "Bois Massif",
+    "osb": "OSB"
+  },
+  "badges": {
+    "bestseller": "Best seller",
+    "premium": "Premium",
+    "noble": "Noble"
+  },
+  "specs": {
+    "thickness": "Épaisseur",
+    "format": "Format",
+    "finish": "Finition",
+    "standard": "Norme",
+    "quality": "Qualité",
+    "section": "Section",
+    "length": "Longueur",
+    "drying": "Séchage",
+    "grade": "Classe"
+  },
+  "items": {
+    "1": {
+      "name": "MDF Mélaminé Blanc Perle",
+      "desc": "Surface lisse et uniforme, idéale pour l'agencement intérieur et la fabrication de meubles.",
+      "specs": { "thickness": "16 / 18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Double face", "standard": "E1 / CARB P2" }
+    },
+    "2": {
+      "name": "MDF Mélaminé Chêne Naturel",
+      "desc": "Décor bois authentique avec veiné naturel. Chaleur et élégance pour vos agencements.",
+      "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Texturé bois", "standard": "E1" }
+    },
+    "3": {
+      "name": "MDF Mélaminé Wengé",
+      "desc": "Décor wengé foncé pour des intérieurs contemporains et contrastés.",
+      "specs": { "thickness": "18 / 22 mm", "format": "2440 × 1220 mm", "finish": "Satiné", "standard": "E1" }
+    },
+    "4": {
+      "name": "Contreplaqué Peuplier",
+      "desc": "Léger et résistant, idéal pour le fond de meuble, l'emballage et la construction légère.",
+      "specs": { "thickness": "4 / 8 / 12 / 18 mm", "format": "2500 × 1220 mm", "quality": "BB/BB", "standard": "CE EN 636" }
+    },
+    "5": {
+      "name": "MDF Mélaminé Gris Béton",
+      "desc": "Aspect béton tendance pour des agencements modernes et industriels.",
+      "specs": { "thickness": "16 / 18 mm", "format": "2440 × 1220 mm", "finish": "Mat structuré", "standard": "E1" }
+    },
+    "6": {
+      "name": "Bois Massif Hêtre",
+      "desc": "Bois massif de qualité supérieure pour l'ébénisterie et la fabrication de meubles haut de gamme.",
+      "specs": { "section": "Sur mesure", "length": "Jusqu'à 4000 mm", "drying": "KD 8-12%", "grade": "A/B" }
+    }
+  }
+},
+    "contact": {
+  "label": "Contact",
+  "title_line1": "Parlons de",
+  "title_line2": "votre",
+  "title_em": "projet",
+  "desc": "Notre équipe commerciale répond à toutes vos demandes de devis, questions techniques et informations produits dans les 24 heures.",
+  "details": {
+    "email": { "label": "Email" },
+    "phone": { "label": "Téléphone" },
+    "whatsapp": { "label": "WhatsApp", "value": "Écrire sur WhatsApp" },
+    "address": { "label": "Adresse" },
+    "hours": { "label": "Horaires", "value": "Lun – Ven · 8h00 – 18h00" }
+  },
+  "form": {
+    "name_label": "Nom complet *",
+    "name_placeholder": "Ahmed Benali",
+    "company_label": "Entreprise *",
+    "company_placeholder": "Menuiserie Al Hadafa",
+    "email_label": "Email professionnel *",
+    "email_placeholder": "contact{'@'}votreentreprise.ma",
+    "phone_label": "Téléphone",
+    "products_label": "Produit(s) d'intérêt",
+    "products": {
+      "mdf_melamine": "MDF Mélaminé",
+      "plywood": "Contreplaqué",
+      "solid_wood": "Bois Massif",
+      "raw_mdf": "MDF Brut",
+      "osb": "OSB"
+    },
+    "message_label": "Votre demande *",
+    "message_placeholder": "Décrivez votre projet, les quantités souhaitées, les délais...",
+    "submit": "Envoyer la demande",
+    "submitting": "Envoi en cours...",
+    "submitted": "Message envoyé !",
+    "note": "Réponse garantie sous 24 heures ouvrables.",
+    "errors": {
+      "required": "Champ requis",
+      "invalid_email": "Email invalide",
+      "send_failed": "Erreur lors de l'envoi. Veuillez réessayer."
+    }
+  }
+},
+
+ "productsPage": {
+  "categories": {
+    "melamine": "Mélaminé",
+    "mdf": "MDF",
+    "hpl": "HPL",
+    "laminate": "Stratifié",
+    "wood": "Bois",
+    "latte": "Latté"
+  },
+  "items": {
+    "1": {
+      "name": "MDF Hydrofuge HDF",
+      "desc": "Panneau MDF traité hydrofuge (vert), résistant à l'humidité. Idéal pour les pièces humides, salles de bain et cuisines."
+    },
+    "2": {
+      "name": "MDF Haute Brillance",
+      "desc": "Surface ultra-brillante laquée en usine. Effet miroir haute résistance aux rayures, parfait pour les façades de cuisine et dressing modernes."
+    },
+    "3": {
+      "name": "MDF Brut",
+      "desc": "Panneau MDF brut haute densité, surface lisse et homogène. Base idéale pour la peinture, le placage ou la stratification."
+    },
+    "4": {
+      "name": "Panneau Mélaminé",
+      "desc": "Panneau de particules (ou MDF) recouvert à chaud et sous pression d'une feuille de papier décoratif imprégnée de résine mélamine. Prêt à l'emploi, il offre une surface totalement finie, très résistante à l'usure quotidienne."
+    },
+    "5": {
+      "name": "Latté Blanc",
+      "desc": "Panneau constitué d'une âme en lattes de bois massif collées, revêtue de faces lisses blanches. Il offre une excellente stabilité dimensionnelle et une grande résistance."
+    },
+    "6": {
+      "name": "Panneau HPL Compacto",
+      "desc": "Stratifié HPL compact haute pression, extrêmement résistant aux chocs, à l'humidité et aux agents chimiques. Idéal pour les espaces collectifs."
+    },
+    "7": {
+      "name": "Stratidécor",
+      "desc": "Panneau décoratif stratifié avec décor bois ou pierre appliqué. Large gamme de décors pour l'agencement intérieur haut de gamme."
+    },
+    "8": {
+      "name": "Bois Dur — Stock entrepôt",
+      "desc": "Large gamme de bois durs disponibles en stock : chêne, hêtre, frêne, noyer. Qualité ébénisterie pour meubles et agencements nobles."
+    }
+  },
+  "hero": {
+    "eyebrow": "Catalogue complet",
+    "title_prefix": "Nos",
+    "title_highlight": "Produits",
+    "subtitle": "Une gamme complète de panneaux de qualité certifiée pour tous vos projets professionnels.",
+    "image_alt": "Entrepôt Lamibois"
+  },
+  "filter": {
+    "all": "Tous"
+  },
+  "loading": "Chargement des produits…",
+  "error": {
+    "message": "Impossible de charger les produits. Vérifiez que Laravel tourne sur le port 8000.",
+    "retry": "Réessayer"
+  },
+  "count": {
+    "found": "produit trouvé | produits trouvés"
+  },
+  "card": {
+    "quote_request": "Demander un devis",
+    "quote_button": "Devis"
+  },
+  "empty": "Aucun produit dans cette catégorie.",
+  "cta": {
+    "title": "Vous ne trouvez pas ce qu'il vous faut ?",
+    "subtitle": "Notre équipe peut vous sourcer des matériaux sur mesure.",
+    "button": "Contacter notre équipe"
+  }
+},
+  "why": {
+  "label": "Pourquoi Lamibois",
+  "title_line1": "Un partenaire de confiance",
+  "title_line2": "pour les",
+  "title_em": "professionnels",
+  "bottom_text": "Vous avez des questions sur nos produits ou délais ?",
+  "bottom_btn": "Parler à un expert",
+  "cards": {
+    "stock": {
+      "title": "Stock permanent",
+      "body": "Plus de 200 références disponibles immédiatement. Aucune rupture sur nos gammes standards, zéro attente pour vos chantiers."
+    },
+    "quality": {
+      "title": "Qualité certifiée",
+      "body": "Tous nos panneaux respectent les normes E1 et CARB P2. Chaque lot est contrôlé à la réception pour garantir une qualité constante."
+    },
+    "delivery": {
+      "title": "Livraison 48h",
+      "body": "Livraison rapide sur tout le Maroc. Notre flotte de transport assure une manutention soignée de vos panneaux jusqu'au chantier."
+    },
+    "advice": {
+      "title": "Conseil technique",
+      "body": "Notre équipe technique vous accompagne dans le choix du matériau le plus adapté à votre projet. Devis personnalisé sous 24h."
+    },
+    "custom_cut": {
+      "title": "Coupe sur mesure",
+      "body": "Service de découpe à la commande pour optimiser votre matière et réduire les chutes. Précision au millimètre."
+    },
+    "pricing": {
+      "title": "Tarifs professionnels",
+      "body": "Des prix adaptés aux volumes professionnels avec des remises progressives selon votre consommation mensuelle."
+    }
+  }
+},
+"footer": {
+  "cta_title_line1": "Prêt à commencer",
+  "cta_title_line2": "votre",
+  "cta_title_em": "prochain projet",
+  "cta_sub": "Contactez notre équipe pour un devis personnalisé.",
+  "cta_btn": "Demander un devis",
+  "response_time": "Réponse sous 24h",
+  "tagline_line1": "Distributeur spécialisé en panneaux de bois",
+  "tagline_line2": "pour les professionnels du Maroc.",
+  "products_title": "Produits",
+  "products": {
+    "mdf_melamine": "MDF Mélaminé",
+    "plywood": "Contreplaqué",
+    "solid_wood": "Bois Massif",
+    "raw_mdf": "MDF Brut",
+    "osb": "OSB",
+    "accessories": "Accessoires"
+  },
+  "company_title": "Entreprise",
+  "company": {
+    "about": "À propos",
+    "certifications": "Certifications",
+    "delivery": "Livraison",
+    "partners": "Partenaires",
+    "contact": "Contact"
+  },
+  "contact_title": "Contact",
+  "country": "Maroc",
+  "hours": "Lun – Ven · 8h00 – 18h00",
+  "copyright": "© 2025 Lamibois · Tous droits réservés",
+  "made_in": "Fait avec soin au Maroc"
+},
+"about": {
+  "label": "À propos de Lamibois",
+  "title_line1": "L'art du bois au",
+  "title_line2": "service des",
+  "title_em": "artisans",
+  "text1": "Depuis plus de 15 ans, Lamibois est le partenaire de référence des professionnels du bois au Maroc. Nous distribuons une gamme complète de panneaux de qualité certifiée — MDF mélaminé, contreplaqué, bois massif — directement aux menuisiers, architectes d'intérieur et entreprises d'agencement.",
+  "text2": "Notre engagement est simple : fournir des matériaux de premier choix, disponibles immédiatement, avec un conseil technique adapté à chaque projet.",
+  "floating_label": "Années d'expertise",
+  "color_range_label": "GAMME DE COULEURS",
+  "values": {
+    "quality": {
+      "title": "Qualité certifiée",
+      "desc": "Tous nos produits respectent les normes européennes E1 et CARB."
+    },
+    "stock": {
+      "title": "Stock permanent",
+      "desc": "200+ références disponibles immédiatement dans notre entrepôt."
+    },
+    "expertise": {
+      "title": "Expertise technique",
+      "desc": "Notre équipe vous conseille dans le choix du bon matériau."
+    }
+  },
+  "cta": "Contacter notre équipe"
+}
+}
+  

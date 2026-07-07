@@ -1,29 +1,24 @@
 <template>
-  <div class="products-page">
+  <div class="products-page" :dir="dir">
     <TheNavbar />
 
     <!-- PAGE HERO -->
     <section class="page-hero">
       <div class="page-hero__bg">
-        <img src="@/assets/products/bois_dur.png" alt="Entrepôt Lamibois" class="page-hero__img" />
+        <img src="@/assets/products/bois_dur.png" :alt="t('productsPage.hero.image_alt')" class="page-hero__img" />
         <div class="page-hero__overlay"></div>
       </div>
       <div class="page-hero__content">
         <p class="page-hero__eyebrow">
           <span class="page-hero__eyebrow-line"></span>
-          Catalogue complet
+          {{ t('productsPage.hero.eyebrow') }}
         </p>
-        <h1 class="page-hero__title">Nos <em>Produits</em></h1>
+        <h1 class="page-hero__title">{{ t('productsPage.hero.title_prefix') }} <em>{{ t('productsPage.hero.title_highlight') }}</em></h1>
         <p class="page-hero__sub">
-          Une gamme complète de panneaux de qualité certifiée pour tous vos projets professionnels.
+          {{ t('productsPage.hero.subtitle') }}
         </p>
       </div>
-      <!-- Breadcrumb -->
-      <div class="page-hero__breadcrumb">
-        <span @click="goHome">Accueil</span>
-        <span class="sep">→</span>
-        <span class="current">Produits</span>
-      </div>
+      
     </section>
 
     <!-- FILTER BAR -->
@@ -36,24 +31,41 @@
           :class="{ active: activeCategory === cat }"
           @click="activeCategory = cat"
         >
-          {{ cat }}
+          {{ cat === 'Tous' ? t('productsPage.filter.all') : cat }}
           <span class="filter-bar__count">{{ countByCategory(cat) }}</span>
         </button>
       </div>
     </div>
 
-    <!-- PRODUCTS GRID -->
-    <section class="catalog">
+    <!-- LOADING STATE -->
+    <div v-if="loading" class="catalog">
       <div class="catalog__inner">
+        <div class="catalog__loading">
+          <div class="catalog__spinner"></div>
+          <p>{{ t('productsPage.loading') }}</p>
+        </div>
+      </div>
+    </div>
 
-        <!-- Results info -->
+    <!-- ERROR STATE -->
+    <div v-else-if="error" class="catalog">
+      <div class="catalog__inner">
+        <div class="catalog__empty">
+          <p>{{ error }}</p>
+          <button class="catalog__retry-btn" @click="fetchProducts">{{ t('productsPage.error.retry') }}</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCTS GRID -->
+    <section v-else class="catalog">
+      <div class="catalog__inner">
         <div class="catalog__meta">
           <p class="catalog__count">
-            <span>{{ filteredProducts.length }}</span> produit{{ filteredProducts.length > 1 ? 's' : '' }} trouvé{{ filteredProducts.length > 1 ? 's' : '' }}
+            <span>{{ filteredProducts.length }}</span> {{ t('productsPage.count.found', filteredProducts.length) }}
           </p>
         </div>
 
-        <!-- Grid -->
         <div class="catalog__grid">
           <div
             v-for="(product, i) in filteredProducts"
@@ -62,41 +74,37 @@
             :class="{ featured: product.featured }"
             :style="{ animationDelay: `${i * 0.08}s` }"
           >
-            <!-- Image -->
             <div class="catalog__card-img-wrap">
               <img
                 :src="product.image"
                 :alt="product.name"
                 class="catalog__card-img"
+                @error="onImgError"
               />
               <div class="catalog__card-overlay"></div>
-
-              <!-- Badge -->
               <div v-if="product.badge" class="catalog__card-badge">{{ product.badge }}</div>
-
-              <!-- Hover specs -->
               <div class="catalog__card-specs">
                 <div v-for="spec in product.specs" :key="spec.label" class="spec-row">
                   <span class="spec-label">{{ spec.label }}</span>
                   <span class="spec-value">{{ spec.value }}</span>
                 </div>
                 <button class="catalog__card-devis" @click="goContact">
-                  Demander un devis →
+                  {{ t('productsPage.card.quote_request') }} →
                 </button>
               </div>
             </div>
 
-            <!-- Info -->
             <div class="catalog__card-info">
-              <span class="catalog__card-cat">{{ product.category }}</span>
-              <h3 class="catalog__card-name">{{ product.name }}</h3>
-              <p class="catalog__card-desc">{{ product.desc }}</p>
+              <span class="catalog__card-cat">{{ translateCategory( product.category) }}</span>
+  <h3 class="catalog__card-name">{{ translateProductField(product.id, 'name', product.name) }}</h3>
+  <p class="catalog__card-desc">{{ translateProductField(product.id, 'desc', product.desc) }}</p>
+
               <div class="catalog__card-footer">
                 <div class="catalog__card-tags">
                   <span v-for="tag in product.tags" :key="tag" class="tag">{{ tag }}</span>
                 </div>
                 <button class="catalog__card-btn" @click="goContact">
-                  Devis
+                  {{ t('productsPage.card.quote_button') }}
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M2 6h8M6 2l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
@@ -106,11 +114,9 @@
           </div>
         </div>
 
-        <!-- Empty state -->
         <div v-if="filteredProducts.length === 0" class="catalog__empty">
-          <p>Aucun produit dans cette catégorie.</p>
+          <p>{{ t('productsPage.empty') }}</p>
         </div>
-
       </div>
     </section>
 
@@ -118,145 +124,115 @@
     <div class="cta-band">
       <div class="cta-band__inner">
         <div>
-          <h2 class="cta-band__title">Vous ne trouvez pas ce qu'il vous faut ?</h2>
-          <p class="cta-band__sub">Notre équipe peut vous sourcer des matériaux sur mesure.</p>
+          <h2 class="cta-band__title">{{ t('productsPage.cta.title') }}</h2>
+          <p class="cta-band__sub">{{ t('productsPage.cta.subtitle') }}</p>
         </div>
-        <button class="cta-band__btn" @click="goContact">Contacter notre équipe →</button>
+        <button class="cta-band__btn" @click="goContact">{{ t('productsPage.cta.button') }} →</button>
       </div>
     </div>
 
     <TheFooter />
   </div>
 </template>
-
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import axios from 'axios'
 import TheNavbar from '@/components/TheNavbar.vue'
 import TheFooter from '@/components/TheFooter.vue'
 
-import imgHydrofuge   from '@/assets/products/Hydrofuge_HDF.png'
-import imgBoisDur     from '@/assets/products/bois_dur.png'
-import imgCompacto    from '@/assets/products/panneau_compacto.png'
-import imgHighGloss   from '@/assets/products/panneaux_high_gloss_mdf.png'
-import imgStratidecor from '@/assets/products/stratidecor.png'
-import imgMDFBrut     from '@/assets/products/panneaux_MDFbrut.png'
-
-const router = useRouter()
+const { t, te, locale } = useI18n()
+const router    = useRouter()
 const goHome    = () => router.push('/')
-const goContact = () => router.push('/#contact')
+const goContact = () => router.push('/contact')
 
+const dir = computed(() => (locale.value === 'ar' ? 'rtl' : 'ltr'))
+
+// ── State ─────────────────────────────────────────────────────────────────────
+const products       = ref([])
+const loading        = ref(true)
+const error          = ref(null)
 const activeCategory = ref('Tous')
 
-const categories = ['Tous', 'MDF', 'HPL', 'Stratifié', 'Bois']
+const API_BASE = 'http://127.0.0.1:8001'
 
-const products = [
-  {
-    id: 1,
-    name: 'MDF Brut',
-    category: 'MDF',
-    featured: true,
-    badge: 'Bestseller',
-    image: imgMDFBrut,
-    desc: 'Panneau MDF brut haute densité, surface lisse et homogène. Base idéale pour la peinture, le placage ou la stratification.',
-    specs: [
-      { label: 'Épaisseur', value: '8 / 12 / 16 / 18 / 22 mm' },
-      { label: 'Format',    value: '2440 × 1220 mm' },
-      { label: 'Densité',   value: '700 – 800 kg/m³' },
-      { label: 'Norme',     value: 'E1 / CARB P2' },
-    ],
-    tags: ['Intérieur', 'Peinture', 'Placage'],
-  },
-  {
-    id: 2,
-    name: 'MDF Hydrofuge HDF',
-    category: 'MDF',
-    featured: false,
-    badge: 'Résistant',
-    image: imgHydrofuge,
-    desc: 'Panneau MDF traité hydrofuge (vert), résistant à l\'humidité. Idéal pour les pièces humides, salles de bain et cuisines.',
-    specs: [
-      { label: 'Épaisseur', value: '12 / 16 / 18 mm' },
-      { label: 'Format',    value: '2440 × 1220 mm' },
-      { label: 'Traitement', value: 'Hydrofuge intégral' },
-      { label: 'Norme',     value: 'E1 / H3' },
-    ],
-    tags: ['Humidité', 'Cuisine', 'Salle de bain'],
-  },
-  {
-    id: 3,
-    name: 'MDF Haute Brillance',
-    category: 'MDF',
-    featured: false,
-    badge: 'Premium',
-    image: imgHighGloss,
-    desc: 'Surface ultra-brillante laquée en usine. Effet miroir haute résistance aux rayures, parfait pour les façades de cuisine et dressing modernes.',
-    specs: [
-      { label: 'Épaisseur', value: '18 mm' },
-      { label: 'Format',    value: '2800 × 1220 mm' },
-      { label: 'Finition',  value: 'Laqué brillant UV' },
-      { label: 'Couleurs',  value: 'Blanc, Noir, Gris, Bleu…' },
-    ],
-    tags: ['Façades', 'Cuisine', 'Dressing'],
-  },
-  {
-    id: 4,
-    name: 'Panneau HPL Compacto',
-    category: 'HPL',
-    featured: true,
-    badge: 'Haute performance',
-    image: imgCompacto,
-    desc: 'Stratifié HPL compact haute pression, extrêmement résistant aux chocs, à l\'humidité et aux agents chimiques. Idéal pour les espaces collectifs.',
-    specs: [
-      { label: 'Épaisseur', value: '6 / 8 / 10 / 12 mm' },
-      { label: 'Format',    value: '3050 × 1300 mm' },
-      { label: 'Résistance', value: 'Chocs · Eau · UV' },
-      { label: 'Usage',     value: 'Intérieur / Extérieur' },
-    ],
-    tags: ['Collectif', 'Extérieur', 'Résistant'],
-  },
-  {
-    id: 5,
-    name: 'Stratidécor',
-    category: 'Stratifié',
-    featured: false,
-    badge: null,
-    image: imgStratidecor,
-    desc: 'Panneau décoratif stratifié avec décor bois ou pierre appliqué. Large gamme de décors pour l\'agencement intérieur haut de gamme.',
-    specs: [
-      { label: 'Épaisseur', value: '18 / 22 mm' },
-      { label: 'Format',    value: '2800 × 2070 mm' },
-      { label: 'Décors',    value: '+200 références' },
-      { label: 'Finition',  value: 'Mat / Satiné / Brossé' },
-    ],
-    tags: ['Décoration', 'Agencement', 'Haut de gamme'],
-  },
-  {
-    id: 6,
-    name: 'Bois Dur — Stock entrepôt',
-    category: 'Bois',
-    featured: false,
-    badge: 'En stock',
-    image: imgBoisDur,
-    desc: 'Large gamme de bois durs disponibles en stock : chêne, hêtre, frêne, noyer. Qualité ébénisterie pour meubles et agencements nobles.',
-    specs: [
-      { label: 'Essences',  value: 'Chêne · Hêtre · Frêne · Noyer' },
-      { label: 'Sections',  value: 'Sur mesure' },
-      { label: 'Séchage',   value: 'KD 8–12%' },
-      { label: 'Qualité',   value: 'A / A-B' },
-    ],
-    tags: ['Massif', 'Ébénisterie', 'Noble'],
-  },
-]
+const onImgError = (e) => {
+  e.target.style.opacity = '0.3'
+}
+
+// ── i18n helpers pour données dynamiques (catégories + produits) ──────────────
+// IMPORTANT : ce mapping doit être déclaré AVANT toute fonction qui l'utilise
+const categoryKeyMap = {
+  'Latté': 'latte',
+  'MDF Mélaminé': 'mdf_melamine',
+  'Contreplaqué': 'plywood',
+  'Bois Massif': 'solid_wood',
+  'OSB': 'osb',
+}
+
+const translateCategory = (rawCategory) => {
+  const key = categoryKeyMap[rawCategory]
+  if (key && te(`productsPage.categories.${key}`)) {
+    return t(`productsPage.categories.${key}`)
+  }
+  return rawCategory
+}
+
+const translateProductField = (id, field, fallback) => {
+  const key = `productsPage.items.${id}.${field}`
+  return te(key) ? t(key) : fallback
+}
+
+// ── Fetch ─────────────────────────────────────────────────────────────────────
+const fetchProducts = async () => {
+  loading.value = true
+  error.value   = null
+
+  try {
+    const response = await axios.get(`${API_BASE}/api/products`)
+
+    let raw = response.data
+    if (!Array.isArray(raw)) {
+      raw = raw.data ?? raw.products ?? Object.values(raw)[0] ?? []
+    }
+
+    products.value = raw.map(p => ({
+      id:       p.id,
+      name:     p.name       ?? '',
+      category: p.category   ?? 'Autre',
+      featured: p.featured   ?? false,
+      badge:    p.badge      ?? null,
+      image: p.image,
+      desc:     p.description ?? p.desc ?? '',
+      specs:    Array.isArray(p.specs) ? p.specs : [],
+      tags:     Array.isArray(p.tags)  ? p.tags  : [],
+    }))
+
+  } catch (err) {
+    console.error('[ProductsView] API error:', err)
+    error.value = t('productsPage.error.message')
+  } finally {
+    loading.value = false
+  }
+}
+
+onMounted(fetchProducts)
+
+// ── Derived ───────────────────────────────────────────────────────────────────
+const categories = computed(() => {
+  const unique = [...new Set(products.value.map(p => p.category))]
+  return ['Tous', ...unique]
+})
 
 const countByCategory = (cat) => {
-  if (cat === 'Tous') return products.length
-  return products.filter(p => p.category === cat).length
+  if (cat === 'Tous') return products.value.length
+  return products.value.filter(p => p.category === cat).length
 }
 
 const filteredProducts = computed(() => {
-  if (activeCategory.value === 'Tous') return products
-  return products.filter(p => p.category === activeCategory.value)
+  if (activeCategory.value === 'Tous') return products.value
+  return products.value.filter(p => p.category === activeCategory.value)
 })
 </script>
 
@@ -320,7 +296,8 @@ const filteredProducts = computed(() => {
 
 .page-hero__eyebrow-line {
   display: block;
-  width: 32px; height: 1px;
+  width: 32px;
+  height: 1px;
   background: var(--wood);
 }
 
@@ -364,8 +341,8 @@ const filteredProducts = computed(() => {
 }
 
 .page-hero__breadcrumb span:hover { color: var(--wood); }
-.page-hero__breadcrumb .current { color: var(--wood); cursor: default; }
-.page-hero__breadcrumb .sep { color: rgba(245, 240, 232, 0.25); cursor: default; }
+.page-hero__breadcrumb .current   { color: var(--wood); cursor: default; }
+.page-hero__breadcrumb .sep       { color: rgba(245, 240, 232, 0.25); cursor: default; }
 
 /* ── FILTER BAR ── */
 .filter-bar {
@@ -455,6 +432,50 @@ const filteredProducts = computed(() => {
   font-size: 14px;
 }
 
+/* Loading */
+.catalog__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 100px 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--mist);
+}
+
+.catalog__spinner {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(45, 74, 45, 0.12);
+  border-top-color: var(--wood);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.catalog__retry-btn {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: var(--forest);
+  color: var(--cream);
+  border: none;
+  padding: 10px 24px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.25s;
+}
+
+.catalog__retry-btn:hover { background: var(--forest-dark); }
+
 /* Grid */
 .catalog__grid {
   display: grid;
@@ -483,7 +504,6 @@ const filteredProducts = computed(() => {
 }
 
 .catalog__card.featured {
-  grid-column: span 1;
   border-color: rgba(201, 168, 124, 0.25);
 }
 
@@ -510,7 +530,6 @@ const filteredProducts = computed(() => {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg, transparent 40%, rgba(17, 29, 17, 0.5) 100%);
-  transition: opacity 0.3s;
 }
 
 /* Badge */
@@ -742,13 +761,13 @@ const filteredProducts = computed(() => {
 }
 
 @media (max-width: 700px) {
-  .page-hero { height: 320px; }
+  .page-hero          { height: 320px; }
   .page-hero__content { padding: 0 24px; }
   .page-hero__breadcrumb { left: 24px; }
-  .filter-bar__inner { padding: 0 24px; }
-  .catalog__inner { padding: 0 24px; }
-  .catalog__grid { grid-template-columns: 1fr; }
-  .cta-band { padding: 48px 24px; }
-  .cta-band__inner { flex-direction: column; align-items: flex-start; }
+  .filter-bar__inner  { padding: 0 24px; }
+  .catalog__inner     { padding: 0 24px; }
+  .catalog__grid      { grid-template-columns: 1fr; }
+  .cta-band           { padding: 48px 24px; }
+  .cta-band__inner    { flex-direction: column; align-items: flex-start; }
 }
 </style>

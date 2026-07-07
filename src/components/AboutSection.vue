@@ -1,12 +1,11 @@
 <template>
-  <section id="apropos" class="about" ref="sectionRef">
+  <section id="apropos" class="about" :class="{ 'about--rtl': isRTL }" ref="sectionRef">
 
     <div class="about__inner">
 
       <!-- Left: Visual -->
       <div class="about__visual" :class="{ visible: inView }">
         <div class="about__image-main">
-          <!-- Simulated wood factory / showroom scene -->
           <svg viewBox="0 0 520 580" fill="none" xmlns="http://www.w3.org/2000/svg" class="about__svg">
             <defs>
               <linearGradient id="room-bg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -35,19 +34,13 @@
               </filter>
             </defs>
 
-            <!-- Background room -->
             <rect width="520" height="580" fill="url(#room-bg)"/>
-
-            <!-- Floor -->
             <polygon points="0,420 520,380 520,580 0,580" fill="url(#floor-g)"/>
-            <!-- Floor grain -->
             <line x1="0" y1="450" x2="520" y2="422" stroke="#3D2B1F" stroke-width="1.5" opacity="0.4"/>
             <line x1="0" y1="490" x2="520" y2="462" stroke="#3D2B1F" stroke-width="1.5" opacity="0.35"/>
             <line x1="0" y1="530" x2="520" y2="502" stroke="#3D2B1F" stroke-width="1.5" opacity="0.3"/>
 
-            <!-- Wall panels background -->
             <rect x="0" y="0" width="520" height="430" fill="#142014" opacity="0.5"/>
-            <!-- Vertical wall slats -->
             <rect x="30"  y="0" width="18" height="430" fill="#1A2E1A" opacity="0.8"/>
             <rect x="70"  y="0" width="18" height="430" fill="#1A2E1A" opacity="0.8"/>
             <rect x="110" y="0" width="18" height="430" fill="#1A2E1A" opacity="0.8"/>
@@ -59,36 +52,24 @@
             <rect x="410" y="0" width="18" height="430" fill="#1A2E1A" opacity="0.8"/>
             <rect x="460" y="0" width="18" height="430" fill="#1A2E1A" opacity="0.8"/>
 
-            <!-- Stacked panels group (center) -->
             <g filter="url(#shadow)">
-              <!-- Stack of panels leaning -->
-              <!-- Panel 1: Oak -->
               <rect x="80" y="180" width="300" height="22" rx="1" fill="url(#panel-stack)" transform="rotate(-2, 230, 191)"/>
               <rect x="80" y="180" width="300" height="3"  rx="0" fill="#8B6030" opacity="0.4" transform="rotate(-2, 230, 191)"/>
 
-              <!-- Panel 2: White -->
               <rect x="85" y="200" width="300" height="22" rx="1" fill="url(#panel-white)" transform="rotate(-2, 235, 211)"/>
               <rect x="85" y="200" width="300" height="3"  rx="0" fill="#C0BBAE" opacity="0.3" transform="rotate(-2, 235, 211)"/>
 
-              <!-- Panel 3: Dark -->
               <rect x="90" y="220" width="300" height="22" rx="1" fill="url(#panel-dark)" transform="rotate(-2, 240, 231)"/>
               <rect x="90" y="220" width="300" height="3"  rx="0" fill="#0A0604" opacity="0.6" transform="rotate(-2, 240, 231)"/>
 
-              <!-- Panel 4: Oak -->
               <rect x="95" y="240" width="300" height="22" rx="1" fill="url(#panel-stack)" transform="rotate(-2, 245, 251)"/>
               <rect x="95" y="240" width="300" height="3"  rx="0" fill="#8B6030" opacity="0.4" transform="rotate(-2, 245, 251)"/>
 
-              <!-- Panel 5: White -->
               <rect x="100" y="260" width="300" height="22" rx="1" fill="url(#panel-white)" transform="rotate(-2, 250, 271)"/>
-
-              <!-- Panel 6: Dark -->
               <rect x="105" y="280" width="300" height="22" rx="1" fill="url(#panel-dark)" transform="rotate(-2, 255, 291)"/>
-
-              <!-- Panel 7: Oak -->
               <rect x="110" y="300" width="300" height="22" rx="1" fill="url(#panel-stack)" transform="rotate(-2, 260, 311)"/>
             </g>
 
-            <!-- Vertical stacked panels on left -->
             <g>
               <rect x="40"  y="220" width="14" height="180" rx="1" fill="#D4B896"/>
               <rect x="56"  y="220" width="14" height="180" rx="1" fill="#2A1D14"/>
@@ -96,7 +77,6 @@
               <rect x="88"  y="220" width="14" height="180" rx="1" fill="#C4975A"/>
               <rect x="104" y="220" width="14" height="180" rx="1" fill="#3D2B1F"/>
               <rect x="120" y="220" width="14" height="180" rx="1" fill="#E8E0D0"/>
-              <!-- Edge lines -->
               <line x1="54"  y1="220" x2="54"  y2="400" stroke="#2D1A10" stroke-width="1" opacity="0.6"/>
               <line x1="70"  y1="220" x2="70"  y2="400" stroke="#2D1A10" stroke-width="1" opacity="0.6"/>
               <line x1="86"  y1="220" x2="86"  y2="400" stroke="#2D1A10" stroke-width="1" opacity="0.6"/>
@@ -104,10 +84,7 @@
               <line x1="118" y1="220" x2="118" y2="400" stroke="#2D1A10" stroke-width="1" opacity="0.6"/>
             </g>
 
-            <!-- Spotlight from above -->
             <ellipse cx="260" cy="180" rx="160" ry="40" fill="#C9A87C" opacity="0.06"/>
-
-            <!-- Logo watermark bottom right -->
             <text x="380" y="560" font-family="Cormorant Garamond, serif" font-size="11" fill="rgba(201,168,124,0.3)" letter-spacing="2">LAMIBOIS</text>
           </svg>
         </div>
@@ -115,7 +92,7 @@
         <!-- Floating stat card -->
         <div class="about__floating-card">
           <p class="about__floating-num">15<span>+</span></p>
-          <p class="about__floating-label">Années d'expertise</p>
+          <p class="about__floating-label">{{ t('about.floating_label') }}</p>
         </div>
 
         <!-- Second accent image -->
@@ -131,44 +108,35 @@
             <line x1="85"  y1="20" x2="85"  y2="120" stroke="#0A0604" stroke-width="1.5" opacity="0.5"/>
             <line x1="120" y1="20" x2="120" y2="120" stroke="#0A0604" stroke-width="1.5" opacity="0.5"/>
             <line x1="155" y1="20" x2="155" y2="120" stroke="#0A0604" stroke-width="1.5" opacity="0.5"/>
-            <text x="10" y="135" font-family="DM Mono, monospace" font-size="6" fill="rgba(201,168,124,0.6)" letter-spacing="1">GAMME DE COULEURS</text>
+            <text x="10" y="135" font-family="DM Mono, monospace" font-size="6" fill="rgba(201,168,124,0.6)" letter-spacing="1">{{ t('about.color_range_label') }}</text>
           </svg>
         </div>
       </div>
 
       <!-- Right: Content -->
       <div class="about__content" :class="{ visible: inView }">
-        <p class="label">À propos de Lamibois</p>
+        <p class="label">{{ t('about.label') }}</p>
         <h2 class="section-title">
-          L'art du bois au<br>
-          service des <em>artisans</em>
+          {{ t('about.title_line1') }}<br>
+          {{ t('about.title_line2') }} <em>{{ t('about.title_em') }}</em>
         </h2>
 
-        <p class="about__text">
-          Depuis plus de 15 ans, Lamibois est le partenaire de référence des professionnels
-          du bois au Maroc. Nous distribuons une gamme complète de panneaux de qualité
-          certifiée — MDF mélaminé, contreplaqué, bois massif — directement aux menuisiers,
-          architectes d'intérieur et entreprises d'agencement.
-        </p>
-
-        <p class="about__text">
-          Notre engagement est simple : fournir des matériaux de premier choix,
-          disponibles immédiatement, avec un conseil technique adapté à chaque projet.
-        </p>
+        <p class="about__text">{{ t('about.text1') }}</p>
+        <p class="about__text">{{ t('about.text2') }}</p>
 
         <!-- Values -->
         <div class="about__values">
-          <div v-for="val in values" :key="val.title" class="about__value">
+          <div v-for="val in values" :key="val.key" class="about__value">
             <div class="about__value-icon">{{ val.icon }}</div>
             <div>
-              <h4 class="about__value-title">{{ val.title }}</h4>
-              <p class="about__value-desc">{{ val.desc }}</p>
+              <h4 class="about__value-title">{{ t(`about.values.${val.key}.title`) }}</h4>
+              <p class="about__value-desc">{{ t(`about.values.${val.key}.desc`) }}</p>
             </div>
           </div>
         </div>
 
-        <button class="about__cta" @click="scrollTo('contact')">
-          Contacter notre équipe
+        <button class="about__cta" @click="$router.push('/contact')">
+          {{ t('about.cta') }}
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -180,17 +148,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
 
 const sectionRef = ref(null)
 const inView     = ref(false)
 
-const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+const isRTL = computed(() => locale.value === 'ar')
 
 const values = [
-  { icon: '◈', title: 'Qualité certifiée',      desc: 'Tous nos produits respectent les normes européennes E1 et CARB.' },
-  { icon: '◎', title: 'Stock permanent',         desc: '200+ références disponibles immédiatement dans notre entrepôt.' },
-  { icon: '◆', title: 'Expertise technique',     desc: 'Notre équipe vous conseille dans le choix du bon matériau.' },
+  { key: 'quality',   icon: '◈' },
+  { key: 'stock',     icon: '◎' },
+  { key: 'expertise', icon: '◆' },
 ]
 
 let observer
@@ -220,6 +191,10 @@ onUnmounted(() => observer?.disconnect())
   margin: 0 auto;
 }
 
+.about--rtl .about__inner {
+  direction: rtl;
+}
+
 /* ── VISUAL ── */
 .about__visual {
   position: relative;
@@ -228,6 +203,13 @@ onUnmounted(() => observer?.disconnect())
   transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .about__visual.visible { opacity: 1; transform: translateX(0); }
+
+.about--rtl .about__visual {
+  transform: translateX(30px);
+}
+.about--rtl .about__visual.visible {
+  transform: translateX(0);
+}
 
 .about__image-main {
   border-radius: 4px;
@@ -246,6 +228,11 @@ onUnmounted(() => observer?.disconnect())
   padding: 20px 28px;
   border-radius: 3px;
   box-shadow: 0 12px 40px rgba(17, 29, 17, 0.4);
+}
+
+.about--rtl .about__floating-card {
+  right: auto;
+  left: -24px;
 }
 
 .about__floating-num {
@@ -280,6 +267,11 @@ onUnmounted(() => observer?.disconnect())
   box-shadow: 0 8px 24px rgba(0,0,0,0.3);
 }
 
+.about--rtl .about__image-accent {
+  right: auto;
+  left: -32px;
+}
+
 .about__image-accent svg { width: 100%; display: block; }
 
 /* ── CONTENT ── */
@@ -289,6 +281,13 @@ onUnmounted(() => observer?.disconnect())
   transition: opacity 0.9s ease 0.2s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
 }
 .about__content.visible { opacity: 1; transform: translateX(0); }
+
+.about--rtl .about__content {
+  transform: translateX(-30px);
+}
+.about--rtl .about__content.visible {
+  transform: translateX(0);
+}
 
 .label {
   font-family: var(--font-mono);
@@ -328,7 +327,6 @@ onUnmounted(() => observer?.disconnect())
   margin-bottom: 20px;
 }
 
-/* Values */
 .about__values {
   margin: 36px 0;
   display: flex;
@@ -396,6 +394,7 @@ onUnmounted(() => observer?.disconnect())
   .about { padding: 80px 24px; }
   .about__inner { grid-template-columns: 1fr; gap: 48px; }
   .about__floating-card { right: 16px; }
+  .about--rtl .about__floating-card { right: auto; left: 16px; }
   .about__image-accent { display: none; }
 }
 </style>
